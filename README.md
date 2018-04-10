@@ -24,5 +24,5 @@ signal record
 }
 
 data record format
-(<time (number)>, <value (string, format dependent on datatype)>)
+[<time (number)>, <value (string, format dependent on datatype)>]
 ```
