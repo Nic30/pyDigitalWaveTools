@@ -1,17 +1,9 @@
 # pyDigitalWaveTools
 
-[![Build Status](https://travis-ci.org/Nic30/pyDigitalWaveTools
-.svg?branch=master)](https://travis-ci.org/Nic30/pyDigitalWaveTools
-)
-[![Coverage Status](https://coveralls.io/repos/github/Nic30/pyDigitalWaveTools
-/badge.svg?branch=master)](https://coveralls.io/github/Nic30/pyDigitalWaveTools
-?branch=master)
-[![PyPI version](https://badge.fury.io/py/pyDigitalWaveTools
-.svg)](http://badge.fury.io/py/pyDigitalWaveTools
-) 
-[![Documentation Status](https://readthedocs.org/projects/pyDigitalWaveTools
-/badge/?version=latest)](http://pyDigitalWaveTools
-.readthedocs.io/en/latest/?badge=latest) 
+[![Build Status](https://travis-ci.org/Nic30/pyDigitalWaveTools.svg?branch=master)](https://travis-ci.org/Nic30/pyDigitalWaveTools)
+[![Coverage Status](https://coveralls.io/repos/github/Nic30/pyDigitalWaveTools/badge.svg?branch=master)](https://coveralls.io/github/Nic30/pyDigitalWaveTools?branch=master)
+[![PyPI version](https://badge.fury.io/py/pyDigitalWaveTools.svg)](http://badge.fury.io/py/pyDigitalWaveTools) 
+[![Documentation Status](https://readthedocs.org/projects/pyDigitalWaveTools/badge/?version=latest)](http://pyDigitalWaveTools.readthedocs.io/en/latest/?badge=latest) 
 
 python library for operations with VCD and other digital wave files
 
