@@ -13,45 +13,21 @@
 
 from collections import defaultdict
 from itertools import dropwhile
+from pyDigitalWaveTools.vcd.common import VcdVarScope, VcdVarInfo
 
 
 class VcdSyntaxError(Exception):
     pass
 
 
-class VcdSignalScope():
-    def __init__(self, name, parent=None):
-        self.name = name
-        self.parent = parent
-        self.children = {}
+class VcdVarParsingInfo(VcdVarInfo):
+    """
+    Container of informations about variable in VCD for parsing of VCD file
+    """
 
-    def _getDebugName(self):
-        buff = []
-        o = self
-        while True:
-            buff.append(o.name)
-            o = o.parent
-            if o is None:
-                break
-        return ".".join(reversed(buff))
-
-    def toJson(self):
-        return {
-            "name": self.name,
-            "children": {n: ch.toJson() for n, ch in self.children.items()}
-        }
-
-    def __repr__(self):
-        return "<%s %s>" % (self.__class__.__name__, self._getDebugName())
-
-
-class VcdSignalInfo():
     def __init__(self, vcdId, name, width, sigType, parent):
-        self.vcdId = vcdId
-        self.name = name
-        self.width = width
-        self.sigType = sigType
-        self.parent = parent
+        super(VcdVarParsingInfo, self).__init__(
+            vcdId, name, width, sigType, parent)
         self.data = []
 
     def toJson(self):
@@ -59,10 +35,6 @@ class VcdSignalInfo():
                 "type": {"width": self.width,
                          "sigType": self.sigType},
                 "data": self.data}
-
-    def __repr__(self):
-        return "<%s %s vcdId:%s>" % (
-            self.__class__.__name__, VcdSignalScope._getDebugName(self), self.vcdId)
 
 
 class VcdParser(object):
@@ -72,7 +44,7 @@ class VcdParser(object):
 
     :ivar keyword_dispatch: dictionary {keyword: parse function}
     :ivar scope: actual VcdSignalInfo
-    :ivar now: actula time (int)
+    :ivar now: actual time (int)
     :ivar idcode2series: dictionary {idcode: series} where series are list of tuples (time, value)
     :ivar signals: dict {topName: VcdSignalInfo instance}
     '''
@@ -183,10 +155,12 @@ class VcdParser(object):
         assert scopeType[1] == "module", scopeType
         scopeName = next(tokeniser)
         assert next(tokeniser)[1] == "$end"
-        self.scope = VcdSignalScope(scopeName[1], self.scope)
+        self.scope = VcdVarScope(scopeName[1], self.scope)
 
     def vcd_upscope(self, tokeniser, keyword):
-        self.scope = self.scope.parent
+        p = self.scope.parent
+        if p is not None:
+            self.scope = p
         assert next(tokeniser)[1] == "$end"
 
     def vcd_var(self, tokeniser, keyword):
@@ -194,7 +168,7 @@ class VcdParser(object):
         # ignore range on identifier ( TODO  Fix this )
         (var_type, size, vcdId, reference) = data[:4]
         parent = self.scope
-        info = VcdSignalInfo(vcdId, reference, size, var_type, parent)
+        info = VcdVarParsingInfo(vcdId, reference, size, var_type, parent)
         assert vcdId not in self.idcode2series
         assert reference not in parent.children
         parent.children[reference] = info
@@ -234,7 +208,7 @@ if __name__ == '__main__':
     with open(fIn) as vcd_file:
         vcd = VcdParser()
         vcd.parse(vcd_file)
-        data = vcd.scope.toJoson()
+        data = vcd.scope.toJson()
 
         if argc == 3:
             with open(fOut, 'w') as jsonFile:

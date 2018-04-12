@@ -1,0 +1,22 @@
+$date
+   2018-04-12 18:04:03.652880
+$end
+$timescale 1ps $end
+$scope module unit0 $end
+$var wire 1 ! sig0 $end
+$var wire 1 " sig1 $end
+$var wire 16 # vect0 $end
+$upscope $end
+$enddefinitions $end
+#0
+X!
+X"
+bXXXXXXXXXXXXXXXX #
+#1
+0!
+#2
+1"
+#3
+b0000000000001010 #
+#4
+b0000000000010100 #
