@@ -22,7 +22,7 @@ class PyTest(TestCommand):
 
 
 setup(name='pyDigitalWaveTools',
-      version='0.1',
+      version='0.2',
       description='python library for operations with VCD and other digital wave files ',
       url='https://github.com/Nic30/pyDigitalWaveTools',
       author='Michal Orsak',

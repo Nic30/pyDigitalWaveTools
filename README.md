@@ -1,0 +1,34 @@
+# pyDigitalWaveTools
+
+[![Build Status](https://travis-ci.org/Nic30/pyDigitalWaveTools.svg?branch=master)](https://travis-ci.org/Nic30/pyDigitalWaveTools)
+[![Coverage Status](https://coveralls.io/repos/github/Nic30/pyDigitalWaveTools/badge.svg?branch=master)](https://coveralls.io/github/Nic30/pyDigitalWaveTools?branch=master)
+[![PyPI version](https://badge.fury.io/py/pyDigitalWaveTools.svg)](http://badge.fury.io/py/pyDigitalWaveTools) 
+[![Documentation Status](https://readthedocs.org/projects/pyDigitalWaveTools/badge/?version=latest)](http://pyDigitalWaveTools.readthedocs.io/en/latest/?badge=latest) 
+
+python library for operations with VCD and other digital wave files
+
+## Feature list
+* parse VCD (std 2009) files to intermediate format
+* dump intermediate format as simple json
+
+
+
+## Output json format
+```
+scope
+{ "name": "<scope name>"
+  "children" : {"<children name>" : child}
+}
+
+child can be scope or signal record
+
+signal record 
+{ "name": "<signal name>"
+  "type": {"sigType": "<vcd signal type>",
+           "width": <bit width of signal (integer)>},
+  "data": [<data records>],
+}
+
+data record format
+[<time (number)>, <value (string, format dependent on datatype)>]
+```
