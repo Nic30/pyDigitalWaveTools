@@ -90,7 +90,7 @@ class VcdVarWritingScope(VcdVarScope):
         """
         Create sub variable scope with defined name
         """
-        ch = VcdVarWritingScope(name, self.writer, paren=self)
+        ch = VcdVarWritingScope(name, self.writer, parent=self)
         assert name not in self.children, name
         self.children[name] = ch
 
@@ -129,7 +129,7 @@ class VcdWriter():
         """
         Create sub variable scope with defined name
         """
-        return VcdVarWritingScope(name, self, name)
+        return VcdVarWritingScope(name, self, parent=self)
 
     def enddefinitions(self):
         self._oFile.write("$enddefinitions $end\n")
@@ -167,7 +167,7 @@ def bitVectorToStr(sig, val, width, vldMask):
     return ''.join(buff)
 
 
-def enumFormater(sig, newVal: "Value", varInfo: VcdVarWritingInfo):
+def vcdEnumFormatter(sig, newVal: "Value", varInfo: VcdVarWritingInfo):
     if newVal.vldMask:
         val = newVal.val
     else:
@@ -176,7 +176,7 @@ def enumFormater(sig, newVal: "Value", varInfo: VcdVarWritingInfo):
     return "s%s %s\n" % (val, varInfo.vcdId)
 
 
-def bitsFormater(sig, newVal: "Value", varInfo: VcdVarWritingInfo):
+def vcdBitsFormatter(sig, newVal: "Value", varInfo: VcdVarWritingInfo):
     v = bitVectorToStr(sig, newVal.val, varInfo.width, newVal.vldMask)
 
     if varInfo.width == 1:
@@ -203,9 +203,9 @@ if __name__ == "__main__":
     sig1 = "sig1"
 
     with vcd.varScope("unit0") as m:
-        m.addVar(sig0, sig0, VCD_SIG_TYPE.WIRE, 1, bitsFormater)
-        m.addVar(sig1, sig1, VCD_SIG_TYPE.WIRE, 1, bitsFormater)
-        m.addVar(vect0, vect0, VCD_SIG_TYPE.WIRE, 16, bitsFormater)
+        m.addVar(sig0, sig0, VCD_SIG_TYPE.WIRE, 1, vcdBitsFormatter)
+        m.addVar(sig1, sig1, VCD_SIG_TYPE.WIRE, 1, vcdBitsFormatter)
+        m.addVar(vect0, vect0, VCD_SIG_TYPE.WIRE, 16, vcdBitsFormatter)
     vcd.enddefinitions()
 
     for s in [sig0, sig1, vect0]:

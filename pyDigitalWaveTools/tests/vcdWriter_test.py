@@ -2,7 +2,7 @@ import os
 import unittest
 from datetime import datetime
 from pyDigitalWaveTools.vcd.common import VCD_SIG_TYPE
-from pyDigitalWaveTools.vcd.writer import VcdWriter, bitsFormater
+from pyDigitalWaveTools.vcd.writer import VcdWriter, vcdBitsFormatter
 
 
 BASE = os.path.dirname(os.path.realpath(__file__))
@@ -33,9 +33,9 @@ class VcdWriterUnitTest(unittest.TestCase):
         sig1 = "sig1"
 
         with vcd.varScope("unit0") as m:
-            m.addVar(sig0, sig0, VCD_SIG_TYPE.WIRE, 1, bitsFormater)
-            m.addVar(sig1, sig1, VCD_SIG_TYPE.WIRE, 1, bitsFormater)
-            m.addVar(vect0, vect0, VCD_SIG_TYPE.WIRE, 16, bitsFormater)
+            m.addVar(sig0, sig0, VCD_SIG_TYPE.WIRE, 1, vcdBitsFormatter)
+            m.addVar(sig1, sig1, VCD_SIG_TYPE.WIRE, 1, vcdBitsFormatter)
+            m.addVar(vect0, vect0, VCD_SIG_TYPE.WIRE, 16, vcdBitsFormatter)
         vcd.enddefinitions()
 
         for s in [sig0, sig1, vect0]:
