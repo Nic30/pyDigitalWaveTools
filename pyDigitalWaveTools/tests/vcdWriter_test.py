@@ -1,7 +1,6 @@
-from dateutil.parser import parse
 import os
 import unittest
-
+from datetime import datetime
 from pyDigitalWaveTools.vcd.common import VCD_SIG_TYPE
 from pyDigitalWaveTools.vcd.writer import VcdWriter, bitsFormater
 
@@ -25,7 +24,9 @@ class VcdWriterUnitTest(unittest.TestCase):
                 self.vldMask = vldMask
         out = StringIO()
         vcd = VcdWriter(out)
-        vcd.date(parse("2018-04-12 18:04:03.652880"))
+        d = datetime.strptime("2018-04-12 18:04:03.652880",
+                              "%Y-%m-%d %H:%M:%S.%f")
+        vcd.date(d)
         vcd.timescale(1)
         sig0 = "sig0"
         vect0 = "vect0"
