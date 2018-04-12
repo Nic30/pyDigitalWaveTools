@@ -9,6 +9,7 @@ python library for operations with VCD and other digital wave files
 
 ## Feature list
 * parse VCD (std 2009) files to intermediate format
+* write VCD files, user specified formaters for user types, predefined formaters for vectors, bits and enum values
 * dump intermediate format as simple json
 
 
