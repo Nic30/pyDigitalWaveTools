@@ -47,7 +47,13 @@ class VcdVarScope():
         buff = []
         o = self
         while True:
-            buff.append(o.name)
+            try:
+                n = o.name
+            except AttributeError:
+                buff.append(repr(o))
+                break
+
+            buff.append(n)
             o = o.parent
             if o is None:
                 break
@@ -61,4 +67,3 @@ class VcdVarScope():
 
     def __repr__(self):
         return "<%s %s>" % (self.__class__.__name__, self._getDebugName())
-
