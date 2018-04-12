@@ -1,1 +1,1 @@
-recursive-include hwtLib *.png
+recursive-include pyDigitalWaveTools *.vcd
