@@ -1,0 +1,32 @@
+dist: trusty
+
+language: python
+
+git:
+  depth: 1
+
+cache:
+  apt: true
+
+python:
+- '3.5'
+- '3.6'
+- nightly
+
+install:
+- pip install pytest coveralls
+
+script:
+- coverage run --source=pyDigitalWaveTools setup.py test
+
+deploy:
+  provider: pypi
+  user: nic30
+  password:
+    secure: QbPXLCZthEuRqIsZEHIDepV69Zypv/tKPbc0vcWzgzcUliUK+NtQsvEWa5zCgJHbJmxBwMhn29EZOgXAgp3qsmFK5IZcrBFkUGrBh+ebCQstLkI3yE5cI59heFxSQlB60j8JDIKbws0bcnjohL5TYHKdR27O2oEUIPeg91NfIFj62gVDfhKG102v1q8v6TVGeuIJ+FGN3rVajyaC5ylD0Sg5M0B6rB0cNq02pgo0RE0VJMTnYV7YOpvvMqGk9dOfcac+EffXMLRt+ueXCN48v79TbI1pPzCeSiJ935GUHFRHFPkKUrT/Qvscc+AynBJwdJ4/dabzaTr2ZySF1wrgHe4SPrshnwVcl4RUzu21/3dcXpYQP3EU/5zCiPv55htZOGQqpe3xJzpZJ5lTKfKlBpRfZQjuFxjCsarEfNYzhrzAUIFEnOyEG9gIeYy2HllcJA2E+ftzqOEpTvei91lghVETqItLOvnUHPLSVO+M6ZQIvmQDZi2NSwqCVosLGh033NaWUES3s6R6kn45Uwlflf6I1VJwbdiZbiFUQfZiS9YwToRF+3xjy+1W/UXTO+7zKFCXVLdHrwynq1i1n0A+1Cst2yxLGGXOOBW8VnbXTP1b2nKUp6ygOg+OxW1hX+0mscM2nJRw5yyYtlXZQo49ycNwb9p5MFkMOtVjHBVblZs=
+  on:
+    tags: true
+    branch: master
+
+after_success:
+- coveralls
