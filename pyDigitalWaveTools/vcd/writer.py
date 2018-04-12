@@ -87,7 +87,12 @@ class VcdVarWritingScope(VcdVarScope):
             sigType, vInf.width, vInf.vcdId, vInf.name))
 
     def varScope(self, name):
-        return VcdVarWritingScope(name, self.writer, paren=self)
+        """
+        Create sub variable scope with defined name
+        """
+        ch = VcdVarWritingScope(name, self.writer, paren=self)
+        assert name not in self.children, name
+        self.children[name] = ch
 
     def __enter__(self) -> "VcdVarWritingScope":
         self._writeHeader()
@@ -121,6 +126,9 @@ class VcdWriter():
         self._oFile.write("$timescale %dps $end\n" % picoSeconds)
 
     def varScope(self, name):
+        """
+        Create sub variable scope with defined name
+        """
         return VcdVarWritingScope(name, self, name)
 
     def enddefinitions(self):
