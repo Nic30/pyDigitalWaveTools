@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
 class VCD_SIG_TYPE():
     WIRE = "wire"
     REAL = "real"
