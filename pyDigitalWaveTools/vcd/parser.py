@@ -1,14 +1,16 @@
-#!python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 '''
-  :note: inspired by https://github.com/GordonMcGregor/vcd_parser/blob/master/vcd/parser.py
+:note: inspired by https://github.com/GordonMcGregor/vcd_parser/blob/master/vcd/parser.py
 
-  A basic self contained VCD parser object
+A basic self contained VCD parser object
 
-  Walks through the definitions constructing the appropriate signal references.
-  Caches XMR paths if and when the signal value changes in the dump for future reference.
-  Needs some hooks for callbacks on signal changes and methods to allow sampling of a signal with an appropriate clock reference
+Walks through the definitions constructing the appropriate signal references.
+Caches XMR paths if and when the signal value changes in the dump for future reference.
+Needs some hooks for callbacks on signal changes and methods to allow sampling of a signal with an appropriate clock reference
 
-  Refer to IEEE SystemVerilog standard 1800-2009 for VCD details Section 21.7 Value Change Dump (VCD) files
+Refer to IEEE SystemVerilog standard 1800-2009 for VCD details Section 21.7 Value Change Dump (VCD) files
 '''
 
 from collections import defaultdict
