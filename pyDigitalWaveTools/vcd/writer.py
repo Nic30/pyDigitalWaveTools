@@ -127,7 +127,7 @@ class VcdWriter():
     def timescale(self, picoSeconds):
         self._oFile.write("$timescale %dps $end\n" % picoSeconds)
 
-    def varScope(self, name):
+    def varScope(self, name) -> VcdVarWritingScope:
         """
         Create sub variable scope with defined name
         """
