@@ -28,7 +28,7 @@ class PyTest(TestCommand):
 
 
 setup(name='pyDigitalWaveTools',
-      version='0.2',
+      version='0.3',
       description='python library for operations with VCD and other digital wave files ',
       long_description=long_description,
       long_description_content_type="text/markdown",
