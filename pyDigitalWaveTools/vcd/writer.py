@@ -5,6 +5,8 @@ import sys
 from typing import Callable
 from pyDigitalWaveTools.vcd.common import VcdVarScope, VCD_SIG_TYPE, VcdVarInfo
 
+class VarAlreadyRegistered(Exception):
+    pass
 
 class VcdVarWritingInfo(VcdVarInfo):
     """
@@ -52,7 +54,7 @@ class VcdVarIdScope(dict):
                          valueFormatter: Callable[["Value"], str]):
         varId = self._idToStr(self._nextId)
         if sig is not None and sig in self:
-            raise KeyError("%r is already registered" % (sig))
+            raise VarAlreadyRegistered("%r is already registered" % (sig))
         vInf = VcdVarWritingInfo(
             varId, name, width, sigType, parent, valueFormatter)
         self[sig] = vInf
@@ -92,9 +94,10 @@ class VcdVarWritingScope(VcdVarScope):
         """
         Create sub variable scope with defined name
         """
-        ch = VcdVarWritingScope(name, self.writer, parent=self)
+        ch = VcdVarWritingScope(name, self._writer, parent=self)
         assert name not in self.children, name
         self.children[name] = ch
+        return ch
 
     def __enter__(self) -> "VcdVarWritingScope":
         self._writeHeader()
