@@ -9,9 +9,9 @@ cache:
   apt: true
 
 python:
-- '3.5'
+#- '3.5'
 - '3.6'
-- nightly
+#- nightly
 
 install:
 - pip install pytest coveralls
