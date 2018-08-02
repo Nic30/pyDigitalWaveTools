@@ -1,2 +1,3 @@
 recursive-include pyDigitalWaveTools *.vcd
 include README.md
+include MANIFEST.in
