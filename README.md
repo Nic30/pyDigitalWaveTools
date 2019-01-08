@@ -34,3 +34,8 @@ signal record
 data record format
 [<time (number)>, <value (string, format dependent on datatype)>]
 ```
+
+
+## Related open source
+
+* [verilog-vcd-parser](https://github.com/ben-marshall/verilog-vcd-parser) - Python, A parser for Value Change Dump (VCD) files as specified in the IEEE System Verilog 1800-2012 standard.
