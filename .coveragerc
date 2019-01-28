@@ -2,7 +2,7 @@
 
 
 source =
-    hwtLib
+    pyDigitalWaveTools
 
 [report]
 exclude_lines =
