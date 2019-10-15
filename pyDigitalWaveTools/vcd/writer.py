@@ -157,13 +157,13 @@ class VcdWriter():
         self._oFile.write(v)
 
 
-def bitVectorToStr(sig, val, width, vldMask):
+def bitVectorToStr(sig, val, width, vld_mask):
     buff = []
     for i in range(width - 1, -1, -1):
         mask = (1 << i)
         b = val & mask
 
-        if vldMask & mask:
+        if vld_mask & mask:
             s = "1" if b else "0"
         else:
             s = "X"
@@ -173,7 +173,7 @@ def bitVectorToStr(sig, val, width, vldMask):
 
 
 def vcdEnumFormatter(sig, newVal: "Value", varInfo: VcdVarWritingInfo):
-    if newVal.vldMask:
+    if newVal.vld_mask:
         val = newVal.val
     else:
         val = "XXXX"
@@ -182,7 +182,7 @@ def vcdEnumFormatter(sig, newVal: "Value", varInfo: VcdVarWritingInfo):
 
 
 def vcdBitsFormatter(sig, newVal: "Value", varInfo: VcdVarWritingInfo):
-    v = bitVectorToStr(sig, newVal.val, varInfo.width, newVal.vldMask)
+    v = bitVectorToStr(sig, newVal.val, varInfo.width, newVal.vld_mask)
 
     if varInfo.width == 1:
         frmt = "%s%s\n"
@@ -196,9 +196,9 @@ if __name__ == "__main__":
     from datetime import datetime
 
     class MaskedValue():
-        def __init__(self, val, vldMask):
+        def __init__(self, val, vld_mask):
             self.val = val
-            self.vldMask = vldMask
+            self.vld_mask = vld_mask
 
     vcd = VcdWriter()
     vcd.date(datetime.now())

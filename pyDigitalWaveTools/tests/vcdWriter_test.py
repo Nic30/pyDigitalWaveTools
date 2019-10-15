@@ -19,9 +19,9 @@ class VcdWriterUnitTest(unittest.TestCase):
     def test_example0(self):
 
         class MaskedValue():
-            def __init__(self, val, vldMask):
+            def __init__(self, val, vld_mask):
                 self.val = val
-                self.vldMask = vldMask
+                self.vld_mask = vld_mask
         out = StringIO()
         vcd = VcdWriter(out)
         d = datetime.strptime("2018-04-12 18:04:03.652880",
