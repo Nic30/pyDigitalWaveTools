@@ -5,8 +5,10 @@ import sys
 from typing import Callable
 from pyDigitalWaveTools.vcd.common import VcdVarScope, VCD_SIG_TYPE, VcdVarInfo
 
+
 class VarAlreadyRegistered(Exception):
     pass
+
 
 class VcdVarWritingInfo(VcdVarInfo):
     """
@@ -22,6 +24,7 @@ class VcdVarWritingInfo(VcdVarInfo):
 
 
 class VcdVarIdScope(dict):
+
     def __init__(self):
         super(VcdVarIdScope, self).__init__()
         self._nextId = 0
@@ -115,6 +118,7 @@ class VcdVarWritingScope(VcdVarScope):
 
 
 class VcdWriter():
+
     def __init__(self, oFile=sys.stdout):
         self._oFile = oFile
         self._idScope = VcdVarIdScope()
@@ -196,6 +200,7 @@ if __name__ == "__main__":
     from datetime import datetime
 
     class MaskedValue():
+
         def __init__(self, val, vld_mask):
             self.val = val
             self.vld_mask = vld_mask
