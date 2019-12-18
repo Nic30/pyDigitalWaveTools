@@ -3,6 +3,7 @@
 
 import sys
 from typing import Callable
+
 from pyDigitalWaveTools.vcd.common import VcdVarScope, VCD_SIG_TYPE, VcdVarInfo
 
 
