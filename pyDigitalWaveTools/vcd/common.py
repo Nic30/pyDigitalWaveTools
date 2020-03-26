@@ -12,11 +12,11 @@ class VcdVarInfo():
     Common part of VcdParsingVarInfo and VcdVarWritingInfo
     Container of informations about variable in VCD
 
-    :ivar vcdId: id in VCD file
-    :ivar name: name in VCD file
-    :ivar widht: width in VCD file (int)
-    :ivar sigType: VCD var type name (from VCD_SIG_TYPE)
-    :ivar parent: parent VcdSignalScope object
+    :ivar ~.vcdId: id in VCD file
+    :ivar ~.name: name in VCD file
+    :ivar ~.widht: width in VCD file (int)
+    :ivar ~.sigType: VCD var type name (from VCD_SIG_TYPE)
+    :ivar ~.parent: parent VcdSignalScope object
     """
 
     def __init__(self, vcdId, name, width, sigType, parent):
@@ -37,9 +37,9 @@ class VcdVarScope():
     """
     VCD module - container for variables
 
-    :ivar name: name of this scope
-    :ivar parent: parent scope of this scope or None
-    :ivar children: dict {name: <VcdVarScope or VcdVarInfo instance>}
+    :ivar ~.name: name of this scope
+    :ivar ~.parent: parent scope of this scope or None
+    :ivar ~.children: dict {name: <VcdVarScope or VcdVarInfo instance>}
     """
 
     def __init__(self, name, parent=None):

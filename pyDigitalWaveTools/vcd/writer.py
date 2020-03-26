@@ -70,9 +70,9 @@ class VcdVarWritingScope(VcdVarScope):
     """
     Vcd module - container for variables
 
-    :ivar oFile: output file to write vcd to
-    :ivar name: name of scope
-    :ivar vars: subscopes or signals
+    :ivar ~.oFile: output file to write vcd to
+    :ivar ~.name: name of scope
+    :ivar ~.vars: subscopes or signals
     """
 
     def __init__(self, name, writer, parent=None):
@@ -84,9 +84,9 @@ class VcdVarWritingScope(VcdVarScope):
         """
         Add variable to scope
 
-        :ivar sig: user specified object to keep track of VcdVarInfo in change() 
-        :ivar sigType: vcd type name
-        :ivar valueFormatter: value which converts new value in change() to vcd string
+        :ivar ~.sig: user specified object to keep track of VcdVarInfo in change() 
+        :ivar ~.sigType: vcd type name
+        :ivar ~.valueFormatter: value which converts new value in change() to vcd string
         """
         vInf = self._writer._idScope.registerVariable(sig, name, self, width,
                                                       sigType, valueFormatter)
