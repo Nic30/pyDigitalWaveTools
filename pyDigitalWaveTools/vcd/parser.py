@@ -44,11 +44,11 @@ class VcdParser(object):
     A parser object for VCD files.
     Reads definitions and walks through the value changes
 
-    :ivar keyword_dispatch: dictionary {keyword: parse function}
-    :ivar scope: actual VcdSignalInfo
-    :ivar now: actual time (int)
-    :ivar idcode2series: dictionary {idcode: series} where series are list of tuples (time, value)
-    :ivar signals: dict {topName: VcdSignalInfo instance}
+    :ivar ~.keyword_dispatch: dictionary {keyword: parse function}
+    :ivar ~.scope: actual VcdSignalInfo
+    :ivar ~.now: actual time (int)
+    :ivar ~.idcode2series: dictionary {idcode: series} where series are list of tuples (time, value)
+    :ivar ~.signals: dict {topName: VcdSignalInfo instance}
     '''
 
     def __init__(self):
@@ -87,7 +87,7 @@ class VcdParser(object):
         '''
         Tokenize and parse the VCD file
 
-        :ivar file_handle: opened file with vcd string
+        :ivar ~.file_handle: opened file with vcd string
         '''
         # open the VCD file and create a token generator
         lineIterator = iter(enumerate(file_handle))
