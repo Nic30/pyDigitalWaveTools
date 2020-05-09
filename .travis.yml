@@ -1,4 +1,4 @@
-dist: trusty
+dist: bionic
 
 language: python
 
@@ -9,9 +9,7 @@ cache:
   apt: true
 
 python:
-#- '3.5'
-- '3.6'
-#- nightly
+- '3.7'
 
 install:
 - pip install pytest coveralls
