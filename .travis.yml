@@ -1,5 +1,4 @@
-dist: trusty
-
+dist: focal
 language: python
 
 git:
@@ -9,9 +8,7 @@ cache:
   apt: true
 
 python:
-#- '3.5'
-- '3.6'
-#- nightly
+- '3.8'
 
 install:
 - pip install pytest coveralls
