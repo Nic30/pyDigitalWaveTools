@@ -66,7 +66,8 @@ class VcdVarScope():
     def toJson(self):
         return {
             "name": self.name,
-            "children": {n: ch.toJson() for n, ch in self.children.items()}
+            "type": {"sigType": "struct"},
+            "data": [ch.toJson() for ch in self.children.values()]
         }
 
     def __repr__(self):

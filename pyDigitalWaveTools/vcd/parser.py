@@ -170,6 +170,7 @@ class VcdParser(object):
         # ignore range on identifier ( TODO  Fix this )
         (var_type, size, vcdId, reference) = data[:4]
         parent = self.scope
+        size = int(size)
         info = VcdVarParsingInfo(vcdId, reference, size, var_type, parent)
         assert vcdId not in self.idcode2series
         assert reference not in parent.children

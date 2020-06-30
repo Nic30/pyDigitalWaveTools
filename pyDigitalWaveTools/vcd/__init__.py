@@ -1,3 +1,3 @@
 """
-Module for parsing and writing of Value Change Dump files
+A module for parsing and writing of Value Change Dump (VCD) files
 """

@@ -20,7 +20,6 @@ class VcdVarWritingInfo(VcdVarInfo):
                  valueFormatter: Callable[["value"], str]):
         super(VcdVarWritingInfo, self).__init__(
             vcdId, name, width, sigType, parent)
-        self.data = []
         self.valueFormatter = valueFormatter
 
 
@@ -98,7 +97,7 @@ class VcdVarWritingScope(VcdVarScope):
         """
         Create sub variable scope with defined name
         """
-        ch = VcdVarWritingScope(name, self._writer, parent=self)
+        ch = self.__class__(name, self._writer, parent=self)
         assert name not in self.children, name
         self.children[name] = ch
         return ch
@@ -124,7 +123,6 @@ class VcdWriter():
         self._oFile = oFile
         self._idScope = VcdVarIdScope()
         self.lastTime = -1
-        self.defaultTop = None
 
     def date(self, text):
         self._oFile.write("$date\n   %s\n$end\n" % text)
