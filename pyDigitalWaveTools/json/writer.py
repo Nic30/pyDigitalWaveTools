@@ -3,8 +3,9 @@
 
 from typing import Callable
 
-from pyDigitalWaveTools.vcd.common import VcdVarScope, VCD_SIG_TYPE, VcdVarInfo
-from pyDigitalWaveTools.vcd.writer import VarAlreadyRegistered, VcdVarWritingScope, VcdWriter
+from pyDigitalWaveTools.vcd.common import VcdVarScope, VCD_SIG_TYPE
+from pyDigitalWaveTools.vcd.writer import VarAlreadyRegistered, VcdVarWritingScope, VcdWriter,\
+    VcdVarWritingInfo, bitVectorToStr
 from pyDigitalWaveTools.vcd.parser import VcdVarParsingInfo
 
 
@@ -88,15 +89,32 @@ class JsonWriter(VcdWriter):
             raise Exception("VcdWriter invalid time update %d -> %d" % (
                             lt, t))
 
-    def logChange(self, time, sig, newVal):
+    def logChange(self, time, sig, newVal, valueUpdater):
         self.setTime(time)
         varInfo = self._idScope[sig]
         v = varInfo.valueFormatter(sig, newVal, varInfo)
         varInfo.data.append((self.lastTime, v))
 
 
+def jsonEnumFormatter(sig, newVal: "Value", varInfo: VcdVarWritingInfo):
+    if newVal.vld_mask:
+        return newVal.val
+    else:
+        return ""
+
+
+def jsonBitsFormatter(sig, newVal: "Value", varInfo: VcdVarWritingInfo):
+    v = bitVectorToStr(sig, newVal.val, varInfo.width, newVal.vld_mask)
+
+    if varInfo.width == 1:
+        frmt = "%s"
+    else:
+        frmt = "b%s"
+
+    return frmt % v
+
+
 if __name__ == "__main__":
-    from datetime import datetime
     from pyDigitalWaveTools.vcd.writer import vcdBitsFormatter
 
     class MaskedValue():
@@ -118,12 +136,12 @@ if __name__ == "__main__":
     vcd.enddefinitions()
 
     for s in [sig0, sig1, vect0]:
-        vcd.logChange(0, s, MaskedValue(0, 0))
+        vcd.logChange(0, s, MaskedValue(0, 0), None)
 
-    vcd.logChange(1, sig0, MaskedValue(0, 1))
-    vcd.logChange(2, sig1, MaskedValue(1, 1))
+    vcd.logChange(1, sig0, MaskedValue(0, 1), None)
+    vcd.logChange(2, sig1, MaskedValue(1, 1), None)
 
-    vcd.logChange(3, vect0, MaskedValue(10, (1 << 16) - 1))
-    vcd.logChange(4, vect0, MaskedValue(20, (1 << 16) - 1))
+    vcd.logChange(3, vect0, MaskedValue(10, (1 << 16) - 1), None)
+    vcd.logChange(4, vect0, MaskedValue(20, (1 << 16) - 1), None)
 
     print(res)
