@@ -35,7 +35,7 @@ class VcdVarParsingInfo(VcdVarInfo):
     def toJson(self):
         return {"name": self.name,
                 "type": {"width": self.width,
-                         "sigType": self.sigType},
+                         "name": self.sigType},
                 "data": self.data}
 
 
