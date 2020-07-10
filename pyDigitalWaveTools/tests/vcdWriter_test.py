@@ -39,13 +39,13 @@ class VcdWriterUnitTest(unittest.TestCase):
         vcd.enddefinitions()
 
         for s in [sig0, sig1, vect0]:
-            vcd.logChange(0, s, MaskedValue(0, 0))
+            vcd.logChange(0, s, MaskedValue(0, 0), None)
 
-        vcd.logChange(1, sig0, MaskedValue(0, 1))
-        vcd.logChange(2, sig1, MaskedValue(1, 1))
+        vcd.logChange(1, sig0, MaskedValue(0, 1), None)
+        vcd.logChange(2, sig1, MaskedValue(1, 1), None)
 
-        vcd.logChange(3, vect0, MaskedValue(10, (1 << 16) - 1))
-        vcd.logChange(4, vect0, MaskedValue(20, (1 << 16) - 1))
+        vcd.logChange(3, vect0, MaskedValue(10, (1 << 16) - 1), None)
+        vcd.logChange(4, vect0, MaskedValue(20, (1 << 16) - 1), None)
 
         with open(os.path.join(BASE, "example0.vcd")) as f:
             ref = f.read()
