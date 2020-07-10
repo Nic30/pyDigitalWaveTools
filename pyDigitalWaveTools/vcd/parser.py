@@ -21,6 +21,18 @@ from pyDigitalWaveTools.vcd.common import VcdVarScope, VcdVarInfo
 class VcdSyntaxError(Exception):
     pass
 
+class VcdDuplicatedVariableError(Exception):
+    """
+    This is when multiple definition to one variable happens. 
+    E.g.
+    $scope module testbench $end
+    $var reg 3 ! x [2:0] $end
+    $upscope $end
+    $scope module testbench $end
+    $var wire 8 " x [7:0] $end
+    $upscope $end
+    """
+    pass
 
 class VcdVarParsingInfo(VcdVarInfo):
     """
@@ -74,7 +86,17 @@ class VcdParser(object):
         self.keyword_dispatch = defaultdict(
             self.parse_error, keyword_functions)
 
-        self.scope = None
+        # A root scope is used to deal with situations like
+        # ------
+        # $scope module testbench $end
+        # $var reg 3 ! x [2:0] $end
+        # $upscope $end
+        # $scope module testbench $end
+        # $var wire 8 " y [7:0] $end
+        # $upscope $end
+        # $enddefinitions $end
+        # ------
+        self.scope = VcdVarScope("root", None)
         self.now = 0
         self.idcode2series = {}
         self.end_of_definitions = False
@@ -157,7 +179,18 @@ class VcdParser(object):
         assert scopeType[1] == "module", scopeType
         scopeName = next(tokeniser)
         assert next(tokeniser)[1] == "$end"
-        self.scope = VcdVarScope(scopeName[1], self.scope)
+        if self.scope is None:
+            self.scope = VcdVarScope(scopeName[1], self.scope)
+        else:
+            if scopeName[1] in self.scope.children:
+                # TODO: handling for cases when both module and var of the same name
+                # exists in one scope
+                assert(isinstance(self.scope.children[scopeName[1]], VcdVarScope))
+                self.scope = self.scope.children[scopeName[1]]
+            else:
+                new_scope = VcdVarScope(scopeName[1], self.scope)
+                self.scope.children[scopeName[1]] = new_scope
+                self.scope = new_scope
 
     def vcd_upscope(self, tokeniser, keyword):
         p = self.scope.parent
