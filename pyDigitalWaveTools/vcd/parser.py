@@ -179,23 +179,18 @@ class VcdParser(object):
         assert scopeType[1] == "module", scopeType
         scopeName = next(tokeniser)
         assert next(tokeniser)[1] == "$end"
-        if self.scope is None:
-            self.scope = VcdVarScope(scopeName[1], self.scope)
+        if scopeName[1] in self.scope.children:
+            # TODO: handling for cases when both module and var of the same name
+            # exists in one scope
+            assert(isinstance(self.scope.children[scopeName[1]], VcdVarScope))
+            self.scope = self.scope.children[scopeName[1]]
         else:
-            if scopeName[1] in self.scope.children:
-                # TODO: handling for cases when both module and var of the same name
-                # exists in one scope
-                assert(isinstance(self.scope.children[scopeName[1]], VcdVarScope))
-                self.scope = self.scope.children[scopeName[1]]
-            else:
-                new_scope = VcdVarScope(scopeName[1], self.scope)
-                self.scope.children[scopeName[1]] = new_scope
-                self.scope = new_scope
+            new_scope = VcdVarScope(scopeName[1], self.scope)
+            self.scope.children[scopeName[1]] = new_scope
+            self.scope = new_scope
 
     def vcd_upscope(self, tokeniser, keyword):
-        p = self.scope.parent
-        if p is not None:
-            self.scope = p
+        self.scope = self.scope.parent
         assert next(tokeniser)[1] == "$end"
 
     def vcd_var(self, tokeniser, keyword):
