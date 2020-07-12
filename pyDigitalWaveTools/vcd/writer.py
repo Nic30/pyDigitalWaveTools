@@ -5,6 +5,7 @@ import sys
 from typing import Callable
 
 from pyDigitalWaveTools.vcd.common import VcdVarScope, VCD_SIG_TYPE, VcdVarInfo
+from pyDigitalWaveTools.vcd.value_format import LogValueFormatter
 
 
 class VarAlreadyRegistered(Exception):
@@ -17,10 +18,11 @@ class VcdVarWritingInfo(VcdVarInfo):
     """
 
     def __init__(self, vcdId, name, width, sigType, parent,
-                 valueFormatter: Callable[["value"], str]):
+                 valueFormatter: LogValueFormatter):
         super(VcdVarWritingInfo, self).__init__(
             vcdId, name, width, sigType, parent)
-        self.valueFormatter = valueFormatter
+        valueFormatter.bind_var_info(self)
+        self.valueFormatter = valueFormatter.format
 
 
 class VcdVarIdScope(dict):
@@ -54,7 +56,7 @@ class VcdVarIdScope(dict):
 
     def registerVariable(self, sig: object, name: str, parent: VcdVarScope,
                          width: int, sigType: VCD_SIG_TYPE,
-                         valueFormatter: Callable[["Value"], str]):
+                         valueFormatter: LogValueFormatter):
         varId = self._idToStr(self._nextId)
         if sig is not None and sig in self:
             raise VarAlreadyRegistered("%r is already registered" % (sig))
@@ -79,7 +81,7 @@ class VcdVarWritingScope(VcdVarScope):
         self._writer = writer
 
     def addVar(self, sig: object, name: str, sigType: VCD_SIG_TYPE, width: int,
-               valueFormatter: Callable[["Value"], str]):
+               valueFormatter: LogValueFormatter):
         """
         Add variable to scope
 
@@ -156,47 +158,13 @@ class VcdWriter():
     def logChange(self, time, sig, newVal, valueUpdater):
         self.setTime(time)
         varInfo = self._idScope[sig]
-        v = varInfo.valueFormatter(sig, newVal, varInfo)
+        v = varInfo.valueFormatter(newVal, valueUpdater)
         self._oFile.write(v)
-
-
-def bitVectorToStr(sig, val, width, vld_mask):
-    buff = []
-    for i in range(width - 1, -1, -1):
-        mask = (1 << i)
-        b = val & mask
-
-        if vld_mask & mask:
-            s = "1" if b else "0"
-        else:
-            s = "X"
-        buff.append(s)
-
-    return ''.join(buff)
-
-
-def vcdEnumFormatter(sig, newVal: "Value", varInfo: VcdVarWritingInfo):
-    if newVal.vld_mask:
-        val = newVal.val
-    else:
-        val = "XXXX"
-
-    return "s%s %s\n" % (val, varInfo.vcdId)
-
-
-def vcdBitsFormatter(sig, newVal: "Value", varInfo: VcdVarWritingInfo):
-    v = bitVectorToStr(sig, newVal.val, varInfo.width, newVal.vld_mask)
-
-    if varInfo.width == 1:
-        frmt = "%s%s\n"
-    else:
-        frmt = "b%s %s\n"
-
-    return frmt % (v, varInfo.vcdId)
 
 
 if __name__ == "__main__":
     from datetime import datetime
+    from pyDigitalWaveTools.vcd.value_format import VcdBitsFormatter
 
     class MaskedValue():
 
@@ -212,9 +180,9 @@ if __name__ == "__main__":
     sig1 = "sig1"
 
     with vcd.varScope("unit0") as m:
-        m.addVar(sig0, sig0, VCD_SIG_TYPE.WIRE, 1, vcdBitsFormatter)
-        m.addVar(sig1, sig1, VCD_SIG_TYPE.WIRE, 1, vcdBitsFormatter)
-        m.addVar(vect0, vect0, VCD_SIG_TYPE.WIRE, 16, vcdBitsFormatter)
+        m.addVar(sig0, sig0, VCD_SIG_TYPE.WIRE, 1, VcdBitsFormatter)
+        m.addVar(sig1, sig1, VCD_SIG_TYPE.WIRE, 1, VcdBitsFormatter)
+        m.addVar(vect0, vect0, VCD_SIG_TYPE.WIRE, 16, VcdBitsFormatter)
     vcd.enddefinitions()
 
     for s in [sig0, sig1, vect0]:
