@@ -18,17 +18,17 @@ class VcdParserUnitTest(unittest.TestCase):
                         {
                             "name": "sig0",
                             "type": {"name": "wire", "width": 1},
-                            "children": [(0, "X"), (1, "0")],
+                            "data": [(0, "X"), (1, "0")],
                         },
                         {
                             "name": "sig1",
                             "type": {"name": "wire", "width": 1},
-                            "children": [(0, "X"), (2, "1")],
+                            "data": [(0, "X"), (2, "1")],
                         },
                         {
                             "name": "vect0",
                             "type": {"name": "wire", "width": 16},
-                            "children": [(0, "bXXXXXXXXXXXXXXXX"), (3, "b0000000000001010"), (4, "b0000000000010100")],
+                            "data": [(0, "bXXXXXXXXXXXXXXXX"), (3, "b0000000000001010"), (4, "b0000000000010100")],
                         },
                     ]
                 }
