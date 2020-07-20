@@ -2,7 +2,8 @@ import os
 import unittest
 from datetime import datetime
 from pyDigitalWaveTools.vcd.common import VCD_SIG_TYPE
-from pyDigitalWaveTools.vcd.writer import VcdWriter, vcdBitsFormatter
+from pyDigitalWaveTools.vcd.writer import VcdWriter
+from pyDigitalWaveTools.vcd.value_format import VcdBitsFormatter
 
 
 BASE = os.path.dirname(os.path.realpath(__file__))
@@ -33,19 +34,19 @@ class VcdWriterUnitTest(unittest.TestCase):
         sig1 = "sig1"
 
         with vcd.varScope("unit0") as m:
-            m.addVar(sig0, sig0, VCD_SIG_TYPE.WIRE, 1, vcdBitsFormatter)
-            m.addVar(sig1, sig1, VCD_SIG_TYPE.WIRE, 1, vcdBitsFormatter)
-            m.addVar(vect0, vect0, VCD_SIG_TYPE.WIRE, 16, vcdBitsFormatter)
+            m.addVar(sig0, sig0, VCD_SIG_TYPE.WIRE, 1, VcdBitsFormatter())
+            m.addVar(sig1, sig1, VCD_SIG_TYPE.WIRE, 1, VcdBitsFormatter())
+            m.addVar(vect0, vect0, VCD_SIG_TYPE.WIRE, 16, VcdBitsFormatter())
         vcd.enddefinitions()
 
         for s in [sig0, sig1, vect0]:
-            vcd.logChange(0, s, MaskedValue(0, 0))
+            vcd.logChange(0, s, MaskedValue(0, 0), None)
 
-        vcd.logChange(1, sig0, MaskedValue(0, 1))
-        vcd.logChange(2, sig1, MaskedValue(1, 1))
+        vcd.logChange(1, sig0, MaskedValue(0, 1), None)
+        vcd.logChange(2, sig1, MaskedValue(1, 1), None)
 
-        vcd.logChange(3, vect0, MaskedValue(10, (1 << 16) - 1))
-        vcd.logChange(4, vect0, MaskedValue(20, (1 << 16) - 1))
+        vcd.logChange(3, vect0, MaskedValue(10, (1 << 16) - 1), None)
+        vcd.logChange(4, vect0, MaskedValue(20, (1 << 16) - 1), None)
 
         with open(os.path.join(BASE, "example0.vcd")) as f:
             ref = f.read()

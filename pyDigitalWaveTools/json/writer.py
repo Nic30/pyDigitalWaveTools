@@ -3,21 +3,23 @@
 
 from typing import Callable
 
-from pyDigitalWaveTools.vcd.common import VcdVarScope, VCD_SIG_TYPE, VcdVarInfo
-from pyDigitalWaveTools.vcd.writer import VarAlreadyRegistered, VcdVarWritingScope, VcdWriter
+from pyDigitalWaveTools.vcd.common import VcdVarScope, VCD_SIG_TYPE
 from pyDigitalWaveTools.vcd.parser import VcdVarParsingInfo
+from pyDigitalWaveTools.vcd.value_format import LogValueFormatter
+from pyDigitalWaveTools.vcd.writer import VarAlreadyRegistered, VcdVarWritingScope, VcdWriter
 
 
 class VarIdScopeJson(dict):
 
     def registerVariable(self, sig: object, name: str, parent: VcdVarScope,
                          width: int, sigType: VCD_SIG_TYPE,
-                         valueFormatter: Callable[["Value"], str]):
+                         valueFormatter: LogValueFormatter):
         if sig is not None and sig in self:
             raise VarAlreadyRegistered("%r is already registered" % (sig))
         vInf = VcdVarParsingInfo(
             None, name, width, sigType, parent)
-        vInf.valueFormatter = valueFormatter
+        valueFormatter.bind_var_info(vInf)
+        vInf.valueFormatter = valueFormatter.format
         self[sig] = vInf
 
         return vInf
@@ -29,7 +31,7 @@ class VarWritingScopeJson(VcdVarWritingScope):
     """
 
     def addVar(self, sig: object, name: str, sigType: VCD_SIG_TYPE, width: int,
-               valueFormatter: Callable[["Value"], str]):
+               valueFormatter: LogValueFormatter):
         """
         Add variable to scope
 
@@ -88,17 +90,16 @@ class JsonWriter(VcdWriter):
             raise Exception("VcdWriter invalid time update %d -> %d" % (
                             lt, t))
 
-    def logChange(self, time, sig, newVal):
+    def logChange(self, time, sig, newVal, valueUpdater):
         self.setTime(time)
         varInfo = self._idScope[sig]
-        v = varInfo.valueFormatter(sig, newVal, varInfo)
+        v = varInfo.valueFormatter(newVal, valueUpdater)
         varInfo.data.append((self.lastTime, v))
 
 
-if __name__ == "__main__":
-    from datetime import datetime
-    from pyDigitalWaveTools.vcd.writer import vcdBitsFormatter
 
+if __name__ == "__main__":
+    from pyDigitalWaveTools.json.value_format import JsonBitsFormatter
     class MaskedValue():
 
         def __init__(self, val, vld_mask):
@@ -112,18 +113,18 @@ if __name__ == "__main__":
     sig1 = "sig1"
 
     with vcd.varScope("unit0") as m:
-        m.addVar(sig0, sig0, VCD_SIG_TYPE.WIRE, 1, vcdBitsFormatter)
-        m.addVar(sig1, sig1, VCD_SIG_TYPE.WIRE, 1, vcdBitsFormatter)
-        m.addVar(vect0, vect0, VCD_SIG_TYPE.WIRE, 16, vcdBitsFormatter)
+        m.addVar(sig0, sig0, VCD_SIG_TYPE.WIRE, 1, JsonBitsFormatter())
+        m.addVar(sig1, sig1, VCD_SIG_TYPE.WIRE, 1, JsonBitsFormatter())
+        m.addVar(vect0, vect0, VCD_SIG_TYPE.WIRE, 16, JsonBitsFormatter())
     vcd.enddefinitions()
 
     for s in [sig0, sig1, vect0]:
-        vcd.logChange(0, s, MaskedValue(0, 0))
+        vcd.logChange(0, s, MaskedValue(0, 0), None)
 
-    vcd.logChange(1, sig0, MaskedValue(0, 1))
-    vcd.logChange(2, sig1, MaskedValue(1, 1))
+    vcd.logChange(1, sig0, MaskedValue(0, 1), None)
+    vcd.logChange(2, sig1, MaskedValue(1, 1), None)
 
-    vcd.logChange(3, vect0, MaskedValue(10, (1 << 16) - 1))
-    vcd.logChange(4, vect0, MaskedValue(20, (1 << 16) - 1))
+    vcd.logChange(3, vect0, MaskedValue(10, (1 << 16) - 1), None)
+    vcd.logChange(4, vect0, MaskedValue(20, (1 << 16) - 1), None)
 
     print(res)

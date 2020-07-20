@@ -9,26 +9,26 @@ class VcdParserUnitTest(unittest.TestCase):
         fIn = os.path.join(BASE, "example0.vcd")
         reference = {
             "name": "root",
-            "type": {"sigType": "struct"},
-            "data": [
+            "type": {"name": "struct"},
+            "children": [
                 {
                     "name": "unit0",
-                    "type": {"sigType": "struct"},
-                    "data": [
+                    "type": {"name": "struct"},
+                    "children": [
                         {
                             "name": "sig0",
-                            "type": {"sigType": "wire", "width": 1},
-                            "data": [(0, "X"), (1, "0")],
+                            "type": {"name": "wire", "width": 1},
+                            "children": [(0, "X"), (1, "0")],
                         },
                         {
                             "name": "sig1",
-                            "type": {"sigType": "wire", "width": 1},
-                            "data": [(0, "X"), (2, "1")],
+                            "type": {"name": "wire", "width": 1},
+                            "children": [(0, "X"), (2, "1")],
                         },
                         {
                             "name": "vect0",
-                            "type": {"sigType": "wire", "width": 16},
-                            "data": [(0, "bXXXXXXXXXXXXXXXX"), (3, "b0000000000001010"), (4, "b0000000000010100")],
+                            "type": {"name": "wire", "width": 16},
+                            "children": [(0, "bXXXXXXXXXXXXXXXX"), (3, "b0000000000001010"), (4, "b0000000000010100")],
                         },
                     ]
                 }

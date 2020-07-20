@@ -5,6 +5,8 @@
 class VCD_SIG_TYPE():
     WIRE = "wire"
     REAL = "real"
+    # not part of vcd
+    ARRAY = "array"
 
 
 class VcdVarInfo():
@@ -14,7 +16,7 @@ class VcdVarInfo():
 
     :ivar ~.vcdId: id in VCD file
     :ivar ~.name: name in VCD file
-    :ivar ~.widht: width in VCD file (int)
+    :ivar ~.width: width in VCD file (int)
     :ivar ~.sigType: VCD var type name (from VCD_SIG_TYPE)
     :ivar ~.parent: parent VcdSignalScope object
     """
@@ -66,8 +68,8 @@ class VcdVarScope():
     def toJson(self):
         return {
             "name": self.name,
-            "type": {"sigType": "struct"},
-            "data": [ch.toJson() for ch in self.children.values()]
+            "type": {"name": "struct"},
+            "children": [ch.toJson() for ch in self.children.values()]
         }
 
     def __repr__(self):
