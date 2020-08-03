@@ -93,8 +93,7 @@ class JsonWriter(VcdWriter):
     def logChange(self, time, sig, newVal, valueUpdater):
         self.setTime(time)
         varInfo = self._idScope[sig]
-        v = varInfo.valueFormatter(newVal, valueUpdater)
-        varInfo.data.append((self.lastTime, v))
+        varInfo.valueFormatter(newVal, valueUpdater, self.lastTime, varInfo.data)
 
 
 

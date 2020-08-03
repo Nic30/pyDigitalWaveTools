@@ -6,6 +6,7 @@ class VCD_SIG_TYPE():
     WIRE = "wire"
     REAL = "real"
     # not part of vcd
+    ENUM = "enum"
     ARRAY = "array"
 
 
