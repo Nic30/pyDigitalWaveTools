@@ -1,3 +1,4 @@
+from copy import copy
 from typing import List, Tuple
 
 from pyDigitalWaveTools.vcd.value_format import bitToStr, bitVectorToStr, \
@@ -11,7 +12,9 @@ class JsonArrayFormatter(LogValueFormatter):
         self.elm_formatter = elm_formatter
 
     def bind_var_info(self, varInfo: VcdVarWritingInfo):
-        self.elm_formatter.bind_var_info(varInfo)
+        vi = copy(varInfo)
+        vi.width = vi.width[-1]
+        self.elm_formatter.bind_var_info(vi)
 
     def format(self, newVal: "Value", updater, t: int, out: List[Tuple]):
         # updater can assign value of whole array, that is why it does not
