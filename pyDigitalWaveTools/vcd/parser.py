@@ -14,9 +14,10 @@ Refer to IEEE SystemVerilog standard 1800-2009 for VCD details Section 21.7 Valu
 '''
 
 from collections import defaultdict
+from io import StringIO
 from itertools import dropwhile
+
 from pyDigitalWaveTools.vcd.common import VcdVarScope, VcdVarInfo
-from _io import StringIO
 
 
 class VcdSyntaxError(Exception):
