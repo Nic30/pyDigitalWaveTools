@@ -16,6 +16,7 @@ Refer to IEEE SystemVerilog standard 1800-2009 for VCD details Section 21.7 Valu
 from collections import defaultdict
 from itertools import dropwhile
 from pyDigitalWaveTools.vcd.common import VcdVarScope, VcdVarInfo
+from _io import StringIO
 
 
 class VcdSyntaxError(Exception):
@@ -82,6 +83,13 @@ class VcdParser(object):
     def value_change(self, vcdId, value):
         '''append change from VCD file signal data series'''
         self.idcode2series[vcdId].append((self.now, value))
+
+    def parse_str(self, vcd_string: str):
+        """
+        Same as :func:`~.parse` just for string 
+        """
+        buff = StringIO(vcd_string)
+        return self.parse(buff)
 
     def parse(self, file_handle):
         '''
