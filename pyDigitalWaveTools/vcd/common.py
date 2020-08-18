@@ -49,6 +49,9 @@ class VcdVarScope():
         self.name = name
         self.parent = parent
         self.children = {}
+        if isinstance(parent, VcdVarScope):
+            assert name not in parent.children, (parent, name)
+            parent.children[name] = self
 
     def _getDebugName(self):
         buff = []

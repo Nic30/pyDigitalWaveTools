@@ -6,7 +6,6 @@ BASE = os.path.dirname(os.path.realpath(__file__))
 
 class VcdParserUnitTest(unittest.TestCase):
     def test_example0(self):
-        fIn = os.path.join(BASE, "example0.vcd")
         reference = {
             "name": "unit0",
             "type": {"name": "struct"},
@@ -28,18 +27,29 @@ class VcdParserUnitTest(unittest.TestCase):
                 },
             ]
         }
+        vcd = self.parse_file("example0.vcd")
+        data = vcd.scope.toJson()
+        self.assertDictEqual(reference, data)
 
+    def parse_file(self, rel_name) -> VcdParser:
+        fIn = os.path.join(BASE, rel_name)
         with open(fIn) as vcd_file:
             vcd = VcdParser()
             vcd.parse(vcd_file)
-            data = vcd.scope.toJson()
-            self.maxDiff = None
-            self.assertDictEqual(reference, data)
+            return vcd
 
+    def test_verilog2005_sample0(self):
+        vcd = self.parse_file("verilog2005-sample0.vcd")
+        data = vcd.scope
+        self.assertEqual(len(data.children), 2)
 
+    def test_verilog2005_sample1(self):
+        vcd = self.parse_file("verilog2005-sample0.vcd")
+        vcd.scope.toJson()
+    
 if __name__ == "__main__":
     suite = unittest.TestSuite()
-    # suite.addTest(VcdParserUnitTest('test_example0'))
+    #suite.addTest(VcdParserUnitTest('test_verilog2005_sample0'))
     suite.addTest(unittest.makeSuite(VcdParserUnitTest))
     runner = unittest.TextTestRunner(verbosity=3)
     runner.run(suite)
