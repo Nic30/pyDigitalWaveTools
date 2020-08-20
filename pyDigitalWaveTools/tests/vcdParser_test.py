@@ -4,7 +4,7 @@ from pyDigitalWaveTools.vcd.parser import VcdParser
 BASE = os.path.dirname(os.path.realpath(__file__))
 
 
-class VcdParserUnitTest(unittest.TestCase):
+class VcdParserTC(unittest.TestCase):
     def test_example0(self):
         reference = {
             "name": "root",
@@ -55,7 +55,7 @@ class VcdParserUnitTest(unittest.TestCase):
     
 if __name__ == "__main__":
     suite = unittest.TestSuite()
-    #suite.addTest(VcdParserUnitTest('test_verilog2005_sample0'))
-    suite.addTest(unittest.makeSuite(VcdParserUnitTest))
+    #suite.addTest(VcdParserTC('test_verilog2005_sample0'))
+    suite.addTest(unittest.makeSuite(VcdParserTC))
     runner = unittest.TextTestRunner(verbosity=3)
     runner.run(suite)

@@ -38,7 +38,7 @@ def example_dump_values0(vcd, bitsFromatter=VcdBitsFormatter):
     vcd.logChange(4, vect0, MaskedValue(20, (1 << 16) - 1), None)
 
 
-class VcdWriterUnitTest(unittest.TestCase):
+class VcdWriterTC(unittest.TestCase):
 
     def test_example0(self):
 
@@ -58,7 +58,7 @@ class VcdWriterUnitTest(unittest.TestCase):
 
 if __name__ == "__main__":
     suite = unittest.TestSuite()
-    # suite.addTest(VcdParserUnitTest('test_example0'))
-    suite.addTest(unittest.makeSuite(VcdWriterUnitTest))
+    # suite.addTest(VcdWriterTC('test_example0'))
+    suite.addTest(unittest.makeSuite(VcdWriterTC))
     runner = unittest.TextTestRunner(verbosity=3)
     runner.run(suite)
