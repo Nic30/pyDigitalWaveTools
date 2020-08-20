@@ -1,0 +1,63 @@
+{
+  "children": [
+    {
+      "data": [
+        [
+          0,
+          "X"
+        ],
+        [
+          1,
+          "0"
+        ]
+      ],
+      "name": "sig0",
+      "type": {
+        "name": "wire",
+        "width": 1
+      }
+    },
+    {
+      "data": [
+        [
+          0,
+          "X"
+        ],
+        [
+          2,
+          "1"
+        ]
+      ],
+      "name": "sig1",
+      "type": {
+        "name": "wire",
+        "width": 1
+      }
+    },
+    {
+      "data": [
+        [
+          0,
+          "bXXXXXXXXXXXXXXXX"
+        ],
+        [
+          3,
+          "b0000000000001010"
+        ],
+        [
+          4,
+          "b0000000000010100"
+        ]
+      ],
+      "name": "vect0",
+      "type": {
+        "name": "wire",
+        "width": 16
+      }
+    }
+  ],
+  "name": "unit0",
+  "type": {
+    "name": "struct"
+  }
+}
