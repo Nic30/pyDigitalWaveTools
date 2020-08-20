@@ -10,7 +10,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(name='pyDigitalWaveTools',
       version='0.7',
-      description='python library for operations with VCD and other digital wave files',
+      description='Library for operations with VCD and other digital wave files',
       long_description=long_description,
       long_description_content_type="text/markdown",
       classifiers=[
