@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from typing import Callable
-
 from pyDigitalWaveTools.vcd.common import VcdVarScope, VCD_SIG_TYPE
 from pyDigitalWaveTools.vcd.parser import VcdVarParsingInfo
 from pyDigitalWaveTools.vcd.value_format import LogValueFormatter
@@ -99,31 +97,10 @@ class JsonWriter(VcdWriter):
 
 if __name__ == "__main__":
     from pyDigitalWaveTools.json.value_format import JsonBitsFormatter
-    class MaskedValue():
-
-        def __init__(self, val, vld_mask):
-            self.val = val
-            self.vld_mask = vld_mask
+    from pyDigitalWaveTools.tests.vcdWriter_test import example_dump_values0
 
     res = {}
     vcd = JsonWriter(res)
-    sig0 = "sig0"
-    vect0 = "vect0"
-    sig1 = "sig1"
-
-    with vcd.varScope("unit0") as m:
-        m.addVar(sig0, sig0, VCD_SIG_TYPE.WIRE, 1, JsonBitsFormatter())
-        m.addVar(sig1, sig1, VCD_SIG_TYPE.WIRE, 1, JsonBitsFormatter())
-        m.addVar(vect0, vect0, VCD_SIG_TYPE.WIRE, 16, JsonBitsFormatter())
-    vcd.enddefinitions()
-
-    for s in [sig0, sig1, vect0]:
-        vcd.logChange(0, s, MaskedValue(0, 0), None)
-
-    vcd.logChange(1, sig0, MaskedValue(0, 1), None)
-    vcd.logChange(2, sig1, MaskedValue(1, 1), None)
-
-    vcd.logChange(3, vect0, MaskedValue(10, (1 << 16) - 1), None)
-    vcd.logChange(4, vect0, MaskedValue(20, (1 << 16) - 1), None)
+    example_dump_values0(vcd, JsonBitsFormatter)
 
     print(res)

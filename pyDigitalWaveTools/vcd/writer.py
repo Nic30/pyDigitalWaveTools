@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from typing import Callable
 
 from pyDigitalWaveTools.vcd.common import VcdVarScope, VCD_SIG_TYPE, VcdVarInfo
 from pyDigitalWaveTools.vcd.value_format import LogValueFormatter
@@ -164,31 +163,10 @@ class VcdWriter():
 if __name__ == "__main__":
     from datetime import datetime
     from pyDigitalWaveTools.vcd.value_format import VcdBitsFormatter
-
-    class MaskedValue():
-
-        def __init__(self, val, vld_mask):
-            self.val = val
-            self.vld_mask = vld_mask
+    from pyDigitalWaveTools.tests.vcdWriter_test import example_dump_values0
 
     vcd = VcdWriter()
     vcd.date(datetime.now())
     vcd.timescale(1)
-    sig0 = "sig0"
-    vect0 = "vect0"
-    sig1 = "sig1"
+    example_dump_values0(vcd, VcdBitsFormatter)
 
-    with vcd.varScope("unit0") as m:
-        m.addVar(sig0, sig0, VCD_SIG_TYPE.WIRE, 1, VcdBitsFormatter)
-        m.addVar(sig1, sig1, VCD_SIG_TYPE.WIRE, 1, VcdBitsFormatter)
-        m.addVar(vect0, vect0, VCD_SIG_TYPE.WIRE, 16, VcdBitsFormatter)
-    vcd.enddefinitions()
-
-    for s in [sig0, sig1, vect0]:
-        vcd.logChange(0, s, MaskedValue(0, 0), None)
-
-    vcd.logChange(1, sig0, MaskedValue(0, 1), None)
-    vcd.logChange(2, sig1, MaskedValue(1, 1), None)
-
-    vcd.logChange(3, vect0, MaskedValue(10, (1 << 16) - 1), None)
-    vcd.logChange(4, vect0, MaskedValue(20, (1 << 16) - 1), None)
