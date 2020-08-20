@@ -181,7 +181,12 @@ class VcdParser(object):
         assert scopeTypeName in self.SCOPE_TYPES, scopeType
         scopeName = next(tokeniser)
         assert next(tokeniser)[1] == "$end"
-        self.scope = VcdVarScope(scopeName[1], self.scope)
+        s = self.scope
+        name = scopeName[1]
+        self.scope = VcdVarScope(scopeName[1], s)
+        if isinstance(s, VcdVarScope):
+            assert name not in s.children, (s, name)
+            s.children[name] = self.scope
 
     def vcd_upscope(self, tokeniser, keyword):
         p = self.scope.parent
