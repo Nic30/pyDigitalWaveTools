@@ -169,6 +169,10 @@ class VcdParser(object):
             # vectors and strings
             value = token
             _, vcdId = next(tokenizer)
+        elif token[0] == "s":
+            # string value
+            value = token[1:]
+            _, vcdId = next(tokenizer)
         else:
             # 1 bit value
             value = token[0]

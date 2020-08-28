@@ -44,6 +44,9 @@ class VcdParserTC(unittest.TestCase):
             vcd.parse(vcd_file)
             return vcd
 
+    def test_AxiRegTC_test_write(self):
+        self.parse_file("AxiRegTC_test_write.vcd")
+
     def test_verilog2005_sample0(self):
         vcd = self.parse_file("verilog2005-sample0.vcd")
         data = vcd.scope
