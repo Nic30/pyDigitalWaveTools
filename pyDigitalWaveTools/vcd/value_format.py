@@ -45,7 +45,7 @@ class VcdEnumFormatter(LogValueFormatter):
         if newVal.vld_mask:
             val = newVal.val
         else:
-            val = "XXXX"
+            val = "UNDEF"
     
         out.write("s%s %s\n" % (val, self.vcdId))
 
