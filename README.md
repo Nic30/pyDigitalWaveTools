@@ -62,3 +62,4 @@ data record format
 
 * [verilog-vcd-parser](https://github.com/ben-marshall/verilog-vcd-parser) - Python, A parser for Value Change Dump (VCD) files as specified in the IEEE System Verilog 1800-2012 standard.
 * [pyvcd](https://github.com/SanDisk-Open-Source/pyvcd) - Python, vcd writer, GTKWave config writer
+* [vcdvcd](https://github.com/cirosantilli/vcdvcd) - Python, vcd parser, dump pretty printer
