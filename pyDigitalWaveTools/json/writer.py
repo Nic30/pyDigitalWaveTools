@@ -13,7 +13,7 @@ class VarIdScopeJson(dict):
                          width: int, sigType: VCD_SIG_TYPE,
                          valueFormatter: LogValueFormatter):
         if sig is not None and sig in self:
-            raise VarAlreadyRegistered("%r is already registered" % (sig))
+            raise VarAlreadyRegistered(f"{sig} is already registered")
         vInf = VcdVarParsingInfo(
             None, name, width, sigType, parent)
         valueFormatter.bind_var_info(vInf)
@@ -33,7 +33,7 @@ class VarWritingScopeJson(VcdVarWritingScope):
         """
         Add variable to scope
 
-        :ivar ~.sig: user specified object to keep track of VcdVarInfo in change() 
+        :ivar ~.sig: user specified object to keep track of VcdVarInfo in change()
         :ivar ~.sigType: vcd type name
         :ivar ~.valueFormatter: value which converts new value in change() to vcd string
         """
@@ -85,8 +85,7 @@ class JsonWriter(VcdWriter):
         elif lt < t:
             self.lastTime = t
         else:
-            raise Exception("VcdWriter invalid time update %d -> %d" % (
-                            lt, t))
+            raise ValueError(f"VcdWriter invalid time update {lt:d} -> {t:d}")
 
     def logChange(self, time, sig, newVal, valueUpdater):
         self.setTime(time)

@@ -58,7 +58,7 @@ class VcdVarIdScope(dict):
                          valueFormatter: LogValueFormatter):
         varId = self._idToStr(self._nextId)
         if sig is not None and sig in self:
-            raise VarAlreadyRegistered("%r is already registered" % (sig))
+            raise VarAlreadyRegistered(f"{sig} is already registered")
         vInf = VcdVarWritingInfo(
             varId, name, width, sigType, parent, valueFormatter)
         self[sig] = vInf
@@ -84,15 +84,14 @@ class VcdVarWritingScope(VcdVarScope):
         """
         Add variable to scope
 
-        :ivar ~.sig: user specified object to keep track of VcdVarInfo in change() 
+        :ivar ~.sig: user specified object to keep track of VcdVarInfo in change()
         :ivar ~.sigType: vcd type name
         :ivar ~.valueFormatter: value which converts new value in change() to vcd string
         """
         vInf = self._writer._idScope.registerVariable(sig, name, self, width,
                                                       sigType, valueFormatter)
         self.children[vInf.name] = vInf
-        self._writer._oFile.write("$var %s %d %s %s $end\n" % (
-            sigType, vInf.width, vInf.vcdId, vInf.name))
+        self._writer._oFile.write(f"$var {sigType:s} {vInf.width:d} {vInf.vcdId:s} {vInf.name:s} $end\n")
 
     def varScope(self, name):
         """
@@ -112,7 +111,7 @@ class VcdVarWritingScope(VcdVarScope):
             self._writeFooter()
 
     def _writeHeader(self):
-        self._writer._oFile.write("$scope module %s $end\n" % self.name)
+        self._writer._oFile.write(f"$scope module {self.name:s} $end\n")
 
     def _writeFooter(self):
         self._writer._oFile.write("$upscope $end\n")
@@ -126,13 +125,13 @@ class VcdWriter():
         self.lastTime = -1
 
     def date(self, text):
-        self._oFile.write("$date\n   %s\n$end\n" % text)
+        self._oFile.write(f"$date\n   {text:s}\n$end\n")
 
     def version(self, text):
-        self._oFile.write("$version   \n%s\n$end\n" % text)
+        self._oFile.write(f"$version   \n{text:s}\n$end\n")
 
     def timescale(self, picoSeconds):
-        self._oFile.write("$timescale %dps $end\n" % picoSeconds)
+        self._oFile.write(f"$timescale {picoSeconds:d}ps $end\n")
 
     def varScope(self, name) -> VcdVarWritingScope:
         """
@@ -149,10 +148,9 @@ class VcdWriter():
             return
         elif lt < t:
             self.lastTime = t
-            self._oFile.write("#%d\n" % (t))
+            self._oFile.write(f"#{t:d}\n")
         else:
-            raise Exception("VcdWriter invalid time update %d -> %d" % (
-                            lt, t))
+            raise Exception(f"VcdWriter invalid time update {lt:d} -> {t:d}")
 
     def logChange(self, time, sig, newVal, valueUpdater):
         self.setTime(time)

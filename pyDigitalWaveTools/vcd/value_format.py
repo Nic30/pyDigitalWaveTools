@@ -46,21 +46,21 @@ class VcdEnumFormatter(LogValueFormatter):
             val = newVal.val
         else:
             val = "UNDEF"
-    
-        out.write("s%s %s\n" % (val, self.vcdId))
+
+        out.write(f"s{val:s} {self.vcdId:s}\n")
 
 
 class VcdBitsFormatter(LogValueFormatter):
-    
+
     def bind_var_info(self, varInfo: "VcdVarWritingInfo"):
         self.width = varInfo.width
         self.vcdId = varInfo.vcdId
         if self.width == 1:
             self.format = self._format_bit
-            self.suffix = "%s\n" % self.vcdId
+            self.suffix = f"{self.vcdId:s}\n"
         else:
             self.format = self._format_bits
-            self.suffix = " %s\n" % self.vcdId
+            self.suffix = f" {self.vcdId:s}\n"
 
     def _format_bit(self, newVal: "Value", updater, t: int, out: StringIO):
         v = bitToStr(newVal.val, newVal.vld_mask)

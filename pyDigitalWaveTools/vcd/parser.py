@@ -25,7 +25,7 @@ class VcdSyntaxError(Exception):
 
 class VcdDuplicatedVariableError(Exception):
     """
-    This is when multiple definition to one variable happens. 
+    This is when multiple definition to one variable happens.
     E.g.
     $scope module testbench $end
     $var reg 3 ! x [2:0] $end
@@ -114,7 +114,7 @@ class VcdParser(object):
 
     def parse_str(self, vcd_string: str):
         """
-        Same as :func:`~.parse` just for string 
+        Same as :func:`~.parse` just for string
         """
         buff = StringIO(vcd_string)
         return self.parse(buff)
@@ -243,7 +243,7 @@ class VcdParser(object):
                     return
                 else:
                     raise VcdSyntaxError(
-                        "Line %d: Expected $end: %s " % (lineNo, token))
+                        f"Line {lineNo:d}: Expected $end: {token:s}")
             else:
                 self.vcd_value_change(lineNo, token, tokeniser)
 
