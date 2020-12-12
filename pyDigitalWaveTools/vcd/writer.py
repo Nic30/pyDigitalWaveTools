@@ -125,7 +125,8 @@ class VcdWriter():
         self.lastTime = -1
 
     def date(self, text):
-        self._oFile.write(f"$date\n   {text:s}\n$end\n")
+        d = str(text)
+        self._oFile.write(f"$date\n   {d:s}\n$end\n")
 
     def version(self, text):
         self._oFile.write(f"$version   \n{text:s}\n$end\n")
