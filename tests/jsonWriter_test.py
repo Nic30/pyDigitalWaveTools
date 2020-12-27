@@ -7,7 +7,7 @@ import unittest
 
 from pyDigitalWaveTools.json.value_format import JsonBitsFormatter
 from pyDigitalWaveTools.json.writer import JsonWriter
-from pyDigitalWaveTools.tests.vcdWriter_test import example_dump_values0
+from tests.vcdWriter_test import example_dump_values0
 
 
 BASE = os.path.dirname(os.path.realpath(__file__))
