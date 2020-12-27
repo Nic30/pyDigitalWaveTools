@@ -1,10 +1,15 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import unittest
 import os
 from pyDigitalWaveTools.vcd.parser import VcdParser
+
 BASE = os.path.dirname(os.path.realpath(__file__))
 
 
 class VcdParserTC(unittest.TestCase):
+
     def test_example0(self):
         reference = {
             "name": "root",
@@ -55,10 +60,11 @@ class VcdParserTC(unittest.TestCase):
     def test_verilog2005_sample1(self):
         vcd = self.parse_file("verilog2005-sample0.vcd")
         vcd.scope.toJson()
-    
+
+
 if __name__ == "__main__":
     suite = unittest.TestSuite()
-    #suite.addTest(VcdParserTC('test_verilog2005_sample0'))
+    # suite.addTest(VcdParserTC('test_verilog2005_sample0'))
     suite.addTest(unittest.makeSuite(VcdParserTC))
     runner = unittest.TextTestRunner(verbosity=3)
     runner.run(suite)

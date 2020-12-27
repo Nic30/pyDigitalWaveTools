@@ -1,14 +1,18 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 from datetime import datetime
 from io import StringIO
 import os
+from typing import Union, Dict, Tuple, List
 import unittest
 
 from pyDigitalWaveTools.vcd.common import VCD_SIG_TYPE, VcdVarScope
-from pyDigitalWaveTools.vcd.value_format import VcdBitsFormatter,\
+from pyDigitalWaveTools.vcd.parser import VcdParser, VcdVarParsingInfo
+from pyDigitalWaveTools.vcd.value_format import VcdBitsFormatter, \
     LogValueFormatter
 from pyDigitalWaveTools.vcd.writer import VcdWriter, VcdVarWritingScope
-from pyDigitalWaveTools.vcd.parser import VcdParser, VcdVarParsingInfo
-from typing import Union, Dict, Tuple, List
+
 
 BASE = os.path.dirname(os.path.realpath(__file__))
 
@@ -18,7 +22,6 @@ class MaskedValue():
     def __init__(self, val, vld_mask):
         self.val = val
         self.vld_mask = vld_mask
-
 
 
 def example_dump_values0(vcd, bitsFromatter=VcdBitsFormatter):
@@ -46,10 +49,10 @@ class AsIsFormatter(LogValueFormatter):
     """
     Return value as is withou any formating or conversion
     """
-    
+
     def bind_var_info(self, varInfo: "VcdVarWritingInfo"):
         self.vcdId = varInfo.vcdId
-        
+
         if varInfo.sigType == VCD_SIG_TYPE.WIRE and varInfo.width == 1:
             self.format = self.format_bit
         elif varInfo.sigType == VCD_SIG_TYPE.WIRE:
@@ -95,6 +98,7 @@ def copy_signals_from_parser(vcd_in: VcdParser, vcd_out: VcdWriter):
     copy_signals_from_parser_recursion(root, vcd_out)
     vcd_out.enddefinitions()
 
+
 def aggregate_signal_updates_by_time(parser_scope: VcdVarScope, res: Dict[int, List[Tuple[VcdVarParsingInfo, str]]]):
     if isinstance(parser_scope, VcdVarScope):
         for _, child in sorted(parser_scope.children.items(), key=lambda x: x[0]):
@@ -124,7 +128,7 @@ class VcdWriterTC(unittest.TestCase):
             ref = f.read()
             out = out.getvalue()
             self.assertEqual(ref, out)
-    
+
     def test_rewrite_AxiRegTC_test_write(self):
         fIn = os.path.join(BASE, "AxiRegTC_test_write.vcd")
         with open(fIn) as vcd_file:
@@ -137,17 +141,17 @@ class VcdWriterTC(unittest.TestCase):
                               "%Y-%m-%d %H:%M:%S.%f")
         vcd_out.date(d)
         vcd_out.timescale(1)
-        
+
         copy_signals_from_parser(vcd_in, vcd_out)
 
         # for value writing we need to have it time order because
-        # we can not move back in time in VCD        
+        # we can not move back in time in VCD
         all_updates = {}
         aggregate_signal_updates_by_time(vcd_in.scope, all_updates)
         for t, updates in sorted(all_updates.items()):
             for sig, val in updates:
                 vcd_out.logChange(t, sig, val, None)
-        
+
         new_vcd_str = out.getvalue()
 
         # parse it again to check if format is correct

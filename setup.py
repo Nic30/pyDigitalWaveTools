@@ -31,5 +31,5 @@ setup(name='pyDigitalWaveTools',
       packages=find_packages(),
       package_data={'pyDigitalWaveTools': ['*.vcd', ]},
       include_package_data=True,
-      zip_safe=False,
-      tests_require=['pytest'])
+      zip_safe=False
+)

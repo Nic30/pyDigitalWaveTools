@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import json
 import os
 import unittest
@@ -34,7 +37,7 @@ class JsonWriterTC(unittest.TestCase):
         res = {}
         w = JsonWriter(res)
         example_dump_values0(w, JsonBitsFormatter)
-        
+
         # with open(os.path.join(BASE, "example0.json"), "w") as f:
         #    json.dump(res, f, indent=2, sort_keys=True)
 
