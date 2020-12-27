@@ -3,9 +3,9 @@
 
 import sys
 from unittest import TestLoader, TextTestRunner, TestSuite
-from pyDigitalWaveTools.tests.jsonWriter_test import JsonWriterTC
-from pyDigitalWaveTools.tests.vcdParser_test import VcdParserTC
-from pyDigitalWaveTools.tests.vcdWriter_test import VcdWriterTC
+from tests.jsonWriter_test import JsonWriterTC
+from tests.vcdParser_test import VcdParserTC
+from tests.vcdWriter_test import VcdWriterTC
 
 
 

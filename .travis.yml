@@ -14,7 +14,7 @@ install:
 - pip install pytest coveralls
 
 script:
-- coverage run --source=pyDigitalWaveTools -m pyDigitalWaveTools.tests.all
+- coverage run --source=pyDigitalWaveTools -m tests.all
 
 deploy:
   provider: pypi

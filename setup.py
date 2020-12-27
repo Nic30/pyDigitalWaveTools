@@ -28,8 +28,6 @@ setup(name='pyDigitalWaveTools',
       author='Michal Orsak',
       author_email='michal.o.socials@gmail.com',
       license='MIT',
-      packages=find_packages(),
-      package_data={'pyDigitalWaveTools': ['*.vcd', ]},
-      include_package_data=True,
-      zip_safe=False
+      packages=find_packages(exclude=["tests", ]),
+      zip_safe=True
 )
