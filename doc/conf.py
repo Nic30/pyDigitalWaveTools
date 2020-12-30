@@ -1,6 +1,7 @@
 # This file only contains a selection of the most common options. For a full
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
+from datetime import datetime
 import glob
 import os
 from sphinx.ext.apidoc import main as apidoc_main
@@ -18,7 +19,7 @@ sys.path.insert(0, os.path.abspath('../'))
 # -- Project information -----------------------------------------------------
 
 project = 'pyDigitalWaveTools'
-copyright = '2020, Michal Orsak'
+copyright = '2017-%d, Michal Orsak' % datetime.now().year
 author = 'Michal Orsak'
 
 
