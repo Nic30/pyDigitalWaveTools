@@ -1,8 +1,8 @@
 # pyDigitalWaveTools
 [![CircleCI](https://circleci.com/gh/Nic30/pyDigitalWaveTools.svg?style=svg)](https://circleci.com/gh/Nic30/pyDigitalWaveTools)
 [![Coverage Status](https://coveralls.io/repos/github/Nic30/pyDigitalWaveTools/badge.svg?branch=master)](https://coveralls.io/github/Nic30/pyDigitalWaveTools?branch=master)
-[![PyPI version](https://badge.fury.io/py/pyDigitalWaveTools.svg)](http://badge.fury.io/py/pyDigitalWaveTools) 
-[![Documentation Status](https://readthedocs.org/projects/pyDigitalWaveTools/badge/?version=latest)](http://pyDigitalWaveTools.readthedocs.io/en/latest/?badge=latest)
+[![PyPI version](https://badge.fury.io/py/pyDigitalWaveTools.svg)](http://badge.fury.io/py/pyDigitalWaveTools)
+[![Documentation Status](https://readthedocs.org/projects/pydigitalwavetools/badge/?version=latest)](http://pydigitalwavetools.readthedocs.io/en/latest/?badge=latest)
 [![Python version](https://img.shields.io/pypi/pyversions/pyDigitalWaveTools.svg)](https://img.shields.io/pypi/pyversions/pyDigitalWaveTools.svg)
 
 python library for operations with VCD and other digital wave files
@@ -45,7 +45,7 @@ scope
 
 child can be scope or signal record
 
-signal record 
+signal record
 { "name": "<signal name>"
   "type": {"sigType": "<vcd signal type>",
            "width": <bit width of signal (integer)>},
