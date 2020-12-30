@@ -1,0 +1,6 @@
+html
+_build/
+*.rst
+make.bat
+Makefile
+!index.rst
