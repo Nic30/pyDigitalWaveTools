@@ -96,7 +96,7 @@ class JsonWriter(VcdWriter):
 
 if __name__ == "__main__":
     from pyDigitalWaveTools.json.value_format import JsonBitsFormatter
-    from pyDigitalWaveTools.tests.vcdWriter_test import example_dump_values0
+    from tests.vcdWriter_test import example_dump_values0
 
     res = {}
     vcd = JsonWriter(res)

@@ -162,7 +162,7 @@ class VcdWriter():
 if __name__ == "__main__":
     from datetime import datetime
     from pyDigitalWaveTools.vcd.value_format import VcdBitsFormatter
-    from pyDigitalWaveTools.tests.vcdWriter_test import example_dump_values0
+    from tests.vcdWriter_test import example_dump_values0
 
     vcd = VcdWriter()
     vcd.date(datetime.now())
