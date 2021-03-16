@@ -61,6 +61,10 @@ class VcdParserTC(unittest.TestCase):
         vcd = self.parse_file("verilog2005-sample0.vcd")
         vcd.scope.toJson()
 
+    def test_multiscope(self):
+        vcd = self.parse_file("multiscope.vcd")
+        vcd.scope.toJson()
+
 
 if __name__ == "__main__":
     suite = unittest.TestSuite()

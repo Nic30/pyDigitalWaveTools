@@ -211,10 +211,11 @@ class VcdParser(object):
         name = scopeName[1]
         self.scope = VcdVarScope(name, s)
         if isinstance(s, VcdVarScope):
-            # TODO: handling for cases when both module and var of the same name
-            # exists in one scope
-            assert name not in s.children, (s, name)
-            s.children[name] = self.scope
+            if name in s.children:
+                self.scope = s.children[name]
+                assert isinstance(self.scope, VcdVarScope), self.scope
+            else:
+                s.children[name] = self.scope
 
     def vcd_upscope(self, tokeniser, keyword):
         self.scope = self.scope.parent
