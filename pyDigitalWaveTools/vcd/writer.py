@@ -122,6 +122,7 @@ class VcdWriter():
     def __init__(self, oFile=sys.stdout):
         self._oFile = oFile
         self._idScope = VcdVarIdScope()
+        self.scopes = []
         self.lastTime = -1
 
     def date(self, text):
@@ -138,7 +139,9 @@ class VcdWriter():
         """
         Create sub variable scope with defined name
         """
-        return VcdVarWritingScope(name, self, parent=self)
+        s = VcdVarWritingScope(name, self, parent=self)
+        self.scopes.append(s)
+        return s
 
     def enddefinitions(self):
         self._oFile.write("$enddefinitions $end\n")
