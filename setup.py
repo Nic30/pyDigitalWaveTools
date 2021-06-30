@@ -26,7 +26,7 @@ setup(name='pyDigitalWaveTools',
       ],
       url='https://github.com/Nic30/pyDigitalWaveTools',
       author='Michal Orsak',
-      author_email='michal.o.socials@gmail.com',
+      author_email='Nic30original@gmail.com',
       license='MIT',
       packages=find_packages(exclude=["tests", ]),
       zip_safe=True
