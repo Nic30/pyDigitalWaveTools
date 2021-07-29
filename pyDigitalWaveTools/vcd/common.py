@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+from typing import Union
 
 
 class VCD_SIG_TYPE():
@@ -15,14 +16,14 @@ class VcdVarInfo():
     Common part of VcdParsingVarInfo and VcdVarWritingInfo
     Container of informations about variable in VCD
 
-    :ivar ~.vcdId: id in VCD file
+    :ivar ~.vcdId: id in VCD file or the first VcdVarInfo which uses the same id (in this case this var is just reference to it)
     :ivar ~.name: name in VCD file
     :ivar ~.width: width in VCD file (int)
     :ivar ~.sigType: VCD var type name (from VCD_SIG_TYPE)
     :ivar ~.parent: parent VcdSignalScope object
     """
 
-    def __init__(self, vcdId, name, width, sigType, parent):
+    def __init__(self, vcdId: Union[str, 'VcdVarInfo'], name: str, width, sigType, parent):
         self.vcdId = vcdId
         self.name = name
         self.width = width
@@ -30,7 +31,7 @@ class VcdVarInfo():
         self.parent = parent
 
     def __repr__(self):
-        return "<%s %s vcdId:%s>" % (
+        return "<%s %s vcdId:%r>" % (
             self.__class__.__name__,
             VcdVarScope._getDebugName(self),
             self.vcdId)
@@ -49,7 +50,6 @@ class VcdVarScope():
         self.name = name
         self.parent = parent
         self.children = {}
-
 
     def _getDebugName(self):
         buff = []

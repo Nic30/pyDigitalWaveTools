@@ -18,10 +18,12 @@ from io import StringIO
 from itertools import dropwhile
 
 from pyDigitalWaveTools.vcd.common import VcdVarScope, VcdVarInfo
+from typing import Union
 
 
 class VcdSyntaxError(Exception):
     pass
+
 
 class VcdDuplicatedVariableError(Exception):
     """
@@ -36,12 +38,13 @@ class VcdDuplicatedVariableError(Exception):
     """
     pass
 
+
 class VcdVarParsingInfo(VcdVarInfo):
     """
     Container of informations about variable in VCD for parsing of VCD file
     """
 
-    def __init__(self, vcdId, name, width, sigType, parent):
+    def __init__(self, vcdId: Union[str, VcdVarInfo], name: str, width, sigType, parent):
         super(VcdVarParsingInfo, self).__init__(
             vcdId, name, width, sigType, parent)
         self.data = []
@@ -71,23 +74,24 @@ class VcdParser(object):
     SCOPE_TYPES = {
         "begin", "fork", "function", "module", "task"
     }
+
     def __init__(self):
         keyword_functions = {
             # declaration_keyword ::=
-            "$comment":        self.drop_while_end,
-            "$date":           self.save_declaration,
+            "$comment": self.drop_while_end,
+            "$date": self.save_declaration,
             "$enddefinitions": self.vcd_enddefinitions,
-            "$scope":          self.vcd_scope,
-            "$timescale":      self.save_declaration,
-            "$upscope":        self.vcd_upscope,
-            "$var":            self.vcd_var,
-            "$version":        self.save_declaration,
+            "$scope": self.vcd_scope,
+            "$timescale": self.save_declaration,
+            "$upscope": self.vcd_upscope,
+            "$var": self.vcd_var,
+            "$version": self.save_declaration,
             # simulation_keyword ::=
-            "$dumpall":        self.vcd_dumpall,
-            "$dumpoff":        self.vcd_dumpoff,
-            "$dumpon":         self.vcd_dumpon,
-            "$dumpvars":       self.vcd_dumpvars,
-            "$end":            self.vcd_end,
+            "$dumpall": self.vcd_dumpall,
+            "$dumpoff": self.vcd_dumpoff,
+            "$dumpon": self.vcd_dumpon,
+            "$dumpvars": self.vcd_dumpvars,
+            "$end": self.vcd_end,
         }
 
         self.keyword_dispatch = defaultdict(
@@ -130,11 +134,11 @@ class VcdParser(object):
         tokeniser = ((lineNo, word)
                      for lineNo, line in lineIterator
                      for word in line.split() if word)
-        #def tokeniser_wrap():
+        # def tokeniser_wrap():
         #    for t in _tokeniser:
         #        print(t)
         #        yield t
-        #tokeniser = tokeniser_wrap()
+        # tokeniser = tokeniser_wrap()
 
         while True:
             token = next(tokeniser)
@@ -227,11 +231,13 @@ class VcdParser(object):
         (var_type, size, vcdId, reference) = data[:4]
         parent = self.scope
         size = int(size)
-        info = VcdVarParsingInfo(vcdId, reference, size, var_type, parent)
-        assert vcdId not in self.idcode2series
+        parent_var = self.idcode2series.get(vcdId, None)
+        info = VcdVarParsingInfo(vcdId if parent_var is None else parent_var,
+                                 reference, size, var_type, parent)
         assert reference not in parent.children
         parent.children[reference] = info
-        self.idcode2series[vcdId] = info.data
+        if parent_var is None:
+            self.idcode2series[vcdId] = info.data
 
     def _vcd_value_change_list(self, tokeniser):
         while True:
