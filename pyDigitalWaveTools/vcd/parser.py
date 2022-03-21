@@ -108,13 +108,17 @@ class VcdParser(object):
         # $enddefinitions $end
         # ------
         self.scope = VcdVarScope("root", None)
-        self.now = 0
+        self.setNow(0)
         self.idcode2series = {}
         self.end_of_definitions = False
 
-    def value_change(self, vcdId, value):
+    def value_change(self, vcdId, value, lineNo):
         '''append change from VCD file signal data series'''
-        self.idcode2series[vcdId].append((self.now, value))
+        try:    
+            self.idcode2series[vcdId].append((self.now, value))
+        except: 
+            print ("Wrong vcdId @ line", lineNo, ":", vcdId) 
+            pass
 
     def parse_str(self, vcd_string: str):
         """
@@ -122,6 +126,9 @@ class VcdParser(object):
         """
         buff = StringIO(vcd_string)
         return self.parse(buff)
+ 
+    def setNow(self, value):
+        self.now = int(value)  # TODO: can be float
 
     def parse(self, file_handle):
         '''
@@ -159,8 +166,7 @@ class VcdParser(object):
                 fn = self.keyword_dispatch[token.strip()]
                 fn(tokeniser, token)
             elif c == '#':
-                # [TODO] may be a float
-                self.now = int(token[1:])
+                self.setNow (token[1:])
             else:
                 self.vcd_value_change(lineNo, token, tokeniser)
 
@@ -177,12 +183,15 @@ class VcdParser(object):
             # string value
             value = token[1:]
             _, vcdId = next(tokenizer)
+        elif token[0] == '#': # In many VCD files there is no $end terminator
+            self.setNow(token[1:])
+            return
         else:
             # 1 bit value
             value = token[0]
             vcdId = token[1:]
 
-        self.value_change(vcdId, value)
+        self.value_change(vcdId, value, lineNo)
 
     def parse_error(self, tokeniser, keyword):
         raise VcdSyntaxError("Don't understand keyword: ", keyword)
