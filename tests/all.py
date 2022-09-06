@@ -28,12 +28,12 @@ if __name__ == '__main__':
 
     try:
         from concurrencytest import ConcurrentTestSuite, fork_for_tests
-        useParallerlTest = True
+        useParallelTest = True
     except ImportError:
         # concurrencytest is not installed, use regular test runner
-        useParallerlTest = False
+        useParallelTest = False
 
-    if useParallerlTest:
+    if useParallelTest:
         # Run same tests across 4 processes
         concurrent_suite = ConcurrentTestSuite(suite, fork_for_tests())
         runner.run(concurrent_suite)
