@@ -16,9 +16,9 @@ Refer to IEEE SystemVerilog standard 1800-2009 for VCD details Section 21.7 Valu
 from collections import defaultdict
 from io import StringIO
 from itertools import dropwhile
+from typing import Union
 
 from pyDigitalWaveTools.vcd.common import VcdVarScope, VcdVarInfo
-from typing import Union
 
 
 class VcdSyntaxError(Exception):
@@ -112,13 +112,15 @@ class VcdParser(object):
         self.idcode2series = {}
         self.end_of_definitions = False
 
+    def on_error(self, lineNo, vcdId):
+        print ("Wrong vcdId @ line", lineNo, ":", vcdId) 
+        
     def value_change(self, vcdId, value, lineNo):
         '''append change from VCD file signal data series'''
-        try:    
+        try: 
             self.idcode2series[vcdId].append((self.now, value))
-        except: 
-            print ("Wrong vcdId @ line", lineNo, ":", vcdId) 
-            pass
+        except:
+            self.on_error(lineNo, vcdId)
 
     def parse_str(self, vcd_string: str):
         """
@@ -183,7 +185,7 @@ class VcdParser(object):
             # string value
             value = token[1:]
             _, vcdId = next(tokenizer)
-        elif token[0] == '#': # In many VCD files there is no $end terminator
+        elif token[0] == '#':  # In many VCD files there is no $end terminator
             self.setNow(token[1:])
             return
         else:
