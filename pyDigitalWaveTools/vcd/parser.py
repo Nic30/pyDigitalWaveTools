@@ -251,7 +251,7 @@ class VcdParser(object):
         assert reference not in parent.children
         parent.children[reference] = info
         if parent_var is None:
-            self.idcode2var[vcdId] = data
+            self.idcode2var[vcdId] = info
             self.idcode2series[vcdId] = info.data
 
     def _vcd_value_change_list(self, tokeniser):
