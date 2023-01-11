@@ -16,7 +16,7 @@ Refer to IEEE SystemVerilog standard 1800-2009 for VCD details Section 21.7 Valu
 from collections import defaultdict
 from io import StringIO
 from itertools import dropwhile
-from typing import Union
+from typing import Union, Dict, Tuple, List
 
 from pyDigitalWaveTools.vcd.common import VcdVarScope, VcdVarInfo
 
@@ -47,7 +47,7 @@ class VcdVarParsingInfo(VcdVarInfo):
     def __init__(self, vcdId: Union[str, VcdVarInfo], name: str, width, sigType, parent):
         super(VcdVarParsingInfo, self).__init__(
             vcdId, name, width, sigType, parent)
-        self.data = []
+        self.data: List[Tuple[int, str]] = []
 
     def toJson(self):
         return {"name": self.name,
@@ -65,7 +65,9 @@ class VcdParser(object):
     :ivar ~.keyword_dispatch: dictionary {keyword: parse function}
     :ivar ~.scope: actual VcdSignalInfo
     :ivar ~.now: actual time (int)
-    :ivar ~.idcode2series: dictionary {idcode: series} where series are list of tuples (time, value)
+    :ivar ~.idcode2var: dictionary mapping vcd id to VcdVarParsingInfo
+    :ivar ~.idcode2series: dictionary {idcode: series} where series are list of tuples (time, value),
+        the list commes from VcdVarParsingInfo object
     :ivar ~.signals: dict {topName: VcdSignalInfo instance}
     '''
     VECTOR_VALUE_CHANGE_PREFIX = {
@@ -109,7 +111,8 @@ class VcdParser(object):
         # ------
         self.scope = VcdVarScope("root", None)
         self.setNow(0)
-        self.idcode2series = {}
+        self.idcode2var: Dict[str, VcdVarParsingInfo] = {}
+        self.idcode2series: Dict[str, List[Tuple[int, str]]] = {}
         self.end_of_definitions = False
 
     def on_error(self, lineNo, vcdId):
@@ -242,12 +245,13 @@ class VcdParser(object):
         (var_type, size, vcdId, reference) = data[:4]
         parent = self.scope
         size = int(size)
-        parent_var = self.idcode2series.get(vcdId, None)
+        parent_var = self.idcode2var.get(vcdId, None)
         info = VcdVarParsingInfo(vcdId if parent_var is None else parent_var,
                                  reference, size, var_type, parent)
         assert reference not in parent.children
         parent.children[reference] = info
         if parent_var is None:
+            self.idcode2var[vcdId] = data
             self.idcode2series[vcdId] = info.data
 
     def _vcd_value_change_list(self, tokeniser):
