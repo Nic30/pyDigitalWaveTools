@@ -98,7 +98,7 @@ class VcdVarWritingScope(VcdVarScope):
         Create sub variable scope with defined name
         """
         ch = self.__class__(name, self._writer, parent=self)
-        assert name not in self.children, name
+        assert name not in self.children, (name, "Names of scopes and variables must be unique")
         self.children[name] = ch
         return ch
 
