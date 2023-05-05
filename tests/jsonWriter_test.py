@@ -48,8 +48,8 @@ class JsonWriterTC(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    suite = unittest.TestSuite()
-    # suite.addTest(JsonWriterTC('test_example0'))
-    suite.addTest(unittest.makeSuite(JsonWriterTC))
+    testLoader = unittest.TestLoader()
+    # suite = unittest.TestSuite([JsonWriterTC("test_example0")])
+    suite = testLoader.loadTestsFromTestCase(JsonWriterTC)
     runner = unittest.TextTestRunner(verbosity=3)
     runner.run(suite)

@@ -160,8 +160,8 @@ class VcdWriterTC(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    suite = unittest.TestSuite()
-    # suite.addTest(VcdWriterTC('test_example0'))
-    suite.addTest(unittest.makeSuite(VcdWriterTC))
+    testLoader = unittest.TestLoader()
+    # suite = unittest.TestSuite([VcdWriterTC("test_example0")])
+    suite = testLoader.loadTestsFromTestCase(VcdWriterTC)
     runner = unittest.TextTestRunner(verbosity=3)
     runner.run(suite)

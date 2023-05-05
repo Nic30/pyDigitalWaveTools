@@ -67,8 +67,8 @@ class VcdParserTC(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    suite = unittest.TestSuite()
-    # suite.addTest(VcdParserTC('test_verilog2005_sample0'))
-    suite.addTest(unittest.makeSuite(VcdParserTC))
+    testLoader = unittest.TestLoader()
+    # suite = unittest.TestSuite([VcdParserTC("test_verilog2005_sample0")])
+    suite = testLoader.loadTestsFromTestCase(VcdParserTC)
     runner = unittest.TextTestRunner(verbosity=3)
     runner.run(suite)
