@@ -29,12 +29,15 @@ def bitToStr(val: int, vld_mask: int):
     else:
         return "X"
 
+
 class LogValueFormatter():
+
     def bind_var_info(self, varInfo: "VcdVarWritingInfo"):
         pass
 
     def format(self, newVal: "Value", updater, t: int, out: StringIO):
         pass
+
 
 class VcdEnumFormatter(LogValueFormatter):
 
@@ -70,5 +73,5 @@ class VcdBitsFormatter(LogValueFormatter):
         out.write(bitVectorToStr(newVal.val, self.width, newVal.vld_mask, "b", self.suffix))
 
     def format(self, newVal: "Value", updater):
-        raise Exception("Should have been replaced in bind_var_info")
+        raise AssertionError("Should have been replaced in bind_var_info")
 
