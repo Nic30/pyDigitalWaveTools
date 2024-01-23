@@ -88,6 +88,7 @@ class VcdVarWritingScope(VcdVarScope):
         :ivar ~.sigType: vcd type name
         :ivar ~.valueFormatter: value which converts new value in change() to vcd string
         """
+        assert name, sig
         vInf = self._writer._idScope.registerVariable(sig, name, self, width,
                                                       sigType, valueFormatter)
         self.children[vInf.name] = vInf
