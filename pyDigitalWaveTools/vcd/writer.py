@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from typing import Set
 
 from pyDigitalWaveTools.vcd.common import VcdVarScope, VCD_SIG_TYPE, VcdVarInfo
 from pyDigitalWaveTools.vcd.value_format import LogValueFormatter
@@ -32,23 +31,22 @@ class VcdVarIdScope(dict):
         self._nextId = 0
         self._idChars = [chr(i) for i in range(ord("!"), ord("~") + 1)]
         self._idCharsCnt = len(self._idChars)
-        self._seenNames: Set[str] = set()
 
-    def _idToStr(self, id_: int):
+    def _idToStr(self, x):
         """
         Convert VCD id in int to string
         """
-        if id_ < 0:
+        if x < 0:
             sign = -1
-        elif id_ == 0:
+        elif x == 0:
             return self._idChars[0]
         else:
             sign = 1
-        id_ *= sign
+        x *= sign
         digits = []
-        while id_:
-            digits.append(self._idChars[id_ % self._idCharsCnt])
-            id_ //= self._idCharsCnt
+        while x:
+            digits.append(self._idChars[x % self._idCharsCnt])
+            x //= self._idCharsCnt
         if sign < 0:
             digits.append('-')
         digits.reverse()
@@ -61,12 +59,10 @@ class VcdVarIdScope(dict):
         varId = self._idToStr(self._nextId)
         if sig is not None and sig in self:
             raise VarAlreadyRegistered(f"{sig} is already registered")
-        assert name not in self._seenNames, name
         vInf = VcdVarWritingInfo(
             varId, name, width, sigType, parent, valueFormatter)
         self[sig] = vInf
         self._nextId += 1
-        self._seenNames.add(name)
         return vInf
 
 
