@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyDigitalWaveTools"
+version = "1.2"
+dependencies = []
+requires-python = ">=3.8"
+authors = [
+  {name = "Michal Orsak", email = "Nic30original@gmail.com"},
+]
+
+description = "A library for operations with VCD and other digital wave files"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = [
+ 'parser', 'vcd-writter', 'vcd', 'value-change-dump', 'simulation']
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+  "Topic :: System :: Hardware",
+  "Topic :: System :: Emulators",
+  "Topic :: Utilities",
+]
+
+
+[project.urls]
+Homepage = "https://github.com/Nic30/pyDigitalWaveTools"
+Documentation = "https://pyDigitalWaveTools.readthedocs.io/en/latest/?badge=latest"
+Repository = "https://github.com/Nic30/pyDigitalWaveTools.git"
+"Bug Tracker" = "https://github.com/Nic30/pyDigitalWaveTools/issues"
