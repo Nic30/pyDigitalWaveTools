@@ -5,7 +5,7 @@
 [![Documentation Status](https://readthedocs.org/projects/pydigitalwavetools/badge/?version=latest)](http://pydigitalwavetools.readthedocs.io/en/latest/?badge=latest)
 [![Python version](https://img.shields.io/pypi/pyversions/pyDigitalWaveTools.svg)](https://img.shields.io/pypi/pyversions/pyDigitalWaveTools.svg)
 
-python library for operations with VCD and other digital wave files
+Python library for operations with VCD and other digital wave files. The VCD spec is a part of verilog standard e.g. IEEE.1364-2005, IEEE.1800-2017
 
 ## Feature list
 * parse VCD (std 2009) files to intermediate format
