@@ -147,7 +147,7 @@ class VcdWriter():
     def enddefinitions(self):
         self._oFile.write("$enddefinitions $end\n")
 
-    def setTime(self, t):
+    def setTime(self, t: int):
         lt = self.lastTime
         if lt == t:
             return
