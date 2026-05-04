@@ -40,6 +40,9 @@ class LogValueFormatter():
 
 
 class VcdEnumFormatter(LogValueFormatter):
+    """
+    :attention: does not complay with the standard
+    """
 
     def bind_var_info(self, varInfo: "VcdVarWritingInfo"):
         self.vcdId = varInfo.vcdId
@@ -72,7 +75,7 @@ class VcdBitsFormatter(LogValueFormatter):
     def _format_bits(self, newVal: "Value", updater, t: int, out: StringIO):
         out.write(bitVectorToStr(newVal.val, self.width, newVal.vld_mask, "b", self.suffix))
 
-    def format(self, newVal: "Value", updater):
+    def format(self, newVal: "Value", updater, t: int, out: StringIO):
         raise AssertionError("Should have been replaced in bind_var_info")
 
 
