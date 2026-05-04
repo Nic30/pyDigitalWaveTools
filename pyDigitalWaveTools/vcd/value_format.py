@@ -75,3 +75,15 @@ class VcdBitsFormatter(LogValueFormatter):
     def format(self, newVal: "Value", updater):
         raise AssertionError("Should have been replaced in bind_var_info")
 
+
+class VcdFloatFormatter(LogValueFormatter):
+    """
+    VcdRealFormatter
+    """
+
+    def bind_var_info(self, varInfo: "VcdVarWritingInfo"):
+        self.vcdId = varInfo.vcdId
+
+    def format(self, newVal: float, updater, t: int, out: StringIO):
+        out.write(f"{newVal:.16g} {self.vcdId:s}\n")
+
