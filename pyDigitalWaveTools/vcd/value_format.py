@@ -88,5 +88,5 @@ class VcdFloatFormatter(LogValueFormatter):
         self.vcdId = varInfo.vcdId
 
     def format(self, newVal: float, updater, t: int, out: StringIO):
-        out.write(f"{newVal:.16g} {self.vcdId:s}\n")
+        out.write(f"r{newVal:.16g} {self.vcdId:s}\n")
 
